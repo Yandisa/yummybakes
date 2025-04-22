@@ -18,7 +18,7 @@ SECRET_KEY = (
 )
 
 # SECURITY WARNING: set to False in production!
-DEBUG = True
+DEBUG = False
 
 # Allowed hostnames/IPs
 ALLOWED_HOSTS = [
