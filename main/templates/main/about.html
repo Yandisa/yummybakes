@@ -1,0 +1,57 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="container py-5">
+  <div class="row align-items-center g-5">
+    <div class="col-md-6 text-center">
+      <img src="{% static 'images/xola_about.jpg' %}" alt="Xola the Baker" class="img-fluid rounded-4 shadow" style="max-height: 400px; object-fit: cover;">
+    </div>
+    <div class="col-md-6">
+      <h2 class="fw-bold mb-3">Meet the Heart Behind Yummy Bakes</h2>
+      <p>
+        What began as a humble kitchen hobby has blossomed into a passion for creating joyful, unforgettable bakes. 
+        Founded by <strong>Xola</strong>, a self-taught baker with an eye for detail and a love for celebration, 
+        Yummy Bakes brings flavor and flair to every occasion.
+      </p>
+      <p>
+        From elegant wedding cakes to playful birthday treats, we’re proud to be part of your sweetest moments — one slice at a time.
+      </p>
+      <p class="fst-italic text-muted">
+        “Every bake tells a story — and yours starts here.”
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Added: Extra Services Section -->
+<section class="container py-5">
+  <div class="text-center mb-4">
+    <h3 class="fw-bold">What We Offer Beyond Cakes</h3>
+    <p class="text-muted">It’s more than baking — we’re here to help you celebrate.</p>
+  </div>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="p-4 bg-white border rounded shadow-sm text-center h-100">
+        <i class="fas fa-birthday-cake fa-2x text-warning mb-3"></i>
+        <h5 class="fw-semibold">Custom Party Packs</h5>
+        <p class="text-muted">Add matching cupcakes, themed sweets, and favor bags to your cake order for the perfect all-in-one setup.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="p-4 bg-white border rounded shadow-sm text-center h-100">
+        <i class="fas fa-balloon fa-2x text-danger mb-3"></i>
+        <h5 class="fw-semibold">Mini Deco & Balloon Garland</h5>
+        <p class="text-muted">We create charming, camera-ready setups — perfect for birthdays, cake pickups, or small events.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="p-4 bg-white border rounded shadow-sm text-center h-100">
+        <i class="fas fa-truck fa-2x text-success mb-3"></i>
+        <h5 class="fw-semibold">Delivery Options</h5>
+        <p class="text-muted">We deliver to Tsomo, KwaMbombela, and nearby areas. Contact us to check if we can deliver to your location!</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="container py-5">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">Our Menu</h2>
+    <p class="text-muted">From cupcakes to custom cakes — made fresh with love.</p>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+
+    <!-- Product 1 -->
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="{% static 'images/yummy_bakes_3.png' %}" class="card-img-top" alt="Cupcake">
+        <div class="card-body">
+          <h5 class="card-title">Vanilla Cupcakes</h5>
+          <p class="card-text">Soft, buttery, and topped with creamy vanilla frosting. (6-pack)</p>
+          <p class="fw-bold text-end">R60</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 2 -->
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="{% static 'images/yummy_bakes_1.png' %}" class="card-img-top" alt="Chocolate Cake">
+        <div class="card-body">
+          <h5 class="card-title">Chocolate Celebration Cake</h5>
+          <p class="card-text">Moist chocolate sponge with rich ganache. Customisable for birthdays!</p>
+          <p class="fw-bold text-end">R250</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 3 -->
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="{% static 'images/yummy_bakes_2.png' %}" class="card-img-top" alt="Cookies">
+        <div class="card-body">
+          <h5 class="card-title">Sugar Cookies</h5>
+          <p class="card-text">Crispy edges and soft centres, decorated to match any theme.</p>
+          <p class="fw-bold text-end">R100 per dozen</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

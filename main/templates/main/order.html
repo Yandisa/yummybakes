@@ -1,0 +1,82 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="container py-5">
+  <div class="text-center mb-4">
+    <h2 class="fw-bold">Place Your Order</h2>
+    <p class="text-muted">You can submit your order below and even upload a reference image for a custom design.</p>
+  </div>
+
+  {% if submitted %}
+    <div class="alert alert-success text-center">
+      Your order was received! You can also send the details directly to WhatsApp below:
+      <br>
+      <a href="{{ whatsapp_url }}" target="_blank" class="btn btn-success mt-3">
+        <i class="fa fa-whatsapp"></i> Send via WhatsApp
+      </a>
+    </div>
+  {% endif %}
+
+  <form action="" method="POST" enctype="multipart/form-data" class="mx-auto" style="max-width: 600px;">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label class="form-label">Your Name</label>
+      <input type="text" class="form-control" name="name" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Contact Number</label>
+      <input type="tel" class="form-control" name="phone" placeholder="e.g. 073 123 4567" required>
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label">Item</label>
+      <input type="text" class="form-control" name="item" placeholder="e.g. Vanilla Cupcakes" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Preferred Date</label>
+      <input type="date" class="form-control" name="date" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Special Instructions</label>
+      <textarea class="form-control" name="notes" rows="3"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Upload a reference image (optional)</label>
+      <input type="file" class="form-control" name="reference_image" accept="image/*" onchange="previewImage(event)">
+      <div class="mt-3 text-center" id="imagePreviewContainer" style="display: none;">
+        <p class="text-muted small">Preview:</p>
+        <img id="imagePreview" class="img-fluid rounded shadow" style="max-height: 300px;" />
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button type="submit" class="btn btn-warning px-4">Submit Order</button>
+    </div>
+  </form>
+</section>
+
+<!-- Image preview script -->
+<script>
+  function previewImage(event) {
+    const fileInput = event.target;
+    const preview = document.getElementById('imagePreview');
+    const container = document.getElementById('imagePreviewContainer');
+
+    if (fileInput.files && fileInput.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        preview.src = e.target.result;
+        container.style.display = 'block';
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    } else {
+      container.style.display = 'none';
+    }
+  }
+</script>
+{% endblock %}

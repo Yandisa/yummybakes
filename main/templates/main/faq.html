@@ -1,0 +1,154 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<section class="container py-5">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">Frequently Asked Questions</h2>
+    <p class="text-muted">Here’s everything you need to know before you order.</p>
+  </div>
+
+  <div class="accordion" id="faqAccordion">
+
+    {% comment %} 1. Delivery {% endcomment %}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="q1">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#a1" aria-expanded="true" aria-controls="a1">
+          Do you offer delivery?
+        </button>
+      </h2>
+      <div id="a1" class="accordion-collapse collapse show" aria-labelledby="q1" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Yes, we do! We deliver within Tsomo, Cofimvaba, Ngcobo, Ngqamakhwe, and surrounding areas. Delivery fees vary based on your location.
+        </div>
+      </div>
+    </div>
+
+    {% comment %} 2. Custom order {% endcomment %}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="q2">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a2" aria-expanded="false" aria-controls="a2">
+          How do I place a custom order?
+        </button>
+      </h2>
+      <div id="a2" class="accordion-collapse collapse" aria-labelledby="q2" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          You can use our <a href="{% url 'order' %}">Order</a> page or contact us directly via WhatsApp with your custom request.
+        </div>
+      </div>
+    </div>
+
+    {% comment %} 3. Payment {% endcomment %}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="q3">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a3" aria-expanded="false" aria-controls="a3">
+          What payment methods do you accept?
+        </button>
+      </h2>
+      <div id="a3" class="accordion-collapse collapse" aria-labelledby="q3" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          We currently accept EFT (Electronic Funds Transfer) and cash. Card payments will be available soon — stay tuned!
+        </div>
+      </div>
+    </div>
+
+    {% comment %} 4. Order timing {% endcomment %}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="q4">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a4" aria-expanded="false" aria-controls="a4">
+          How far in advance should I place my order?
+        </button>
+      </h2>
+      <div id="a4" class="accordion-collapse collapse" aria-labelledby="q4" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          For custom cakes, 3–5 days’ notice is ideal. For cupcakes or cookies, 1–2 days is usually enough.
+        </div>
+      </div>
+    </div>
+
+    {% comment %} 5. Confirmation {% endcomment %}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="q5">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a5" aria-expanded="false" aria-controls="a5">
+          How do I confirm my order?
+        </button>
+      </h2>
+      <div id="a5" class="accordion-collapse collapse" aria-labelledby="q5" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Once we receive your order details, we’ll send a confirmation via WhatsApp or email.
+          Orders are only confirmed after at least 50% payment (for EFT payments).
+        </div>
+      </div>
+    </div>
+
+    {% comment %} 6. Flavors {% endcomment %}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="q6">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a6" aria-expanded="false" aria-controls="a6">
+          What flavors do you offer?
+        </button>
+      </h2>
+      <div id="a6" class="accordion-collapse collapse" aria-labelledby="q6" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          We bake classics like vanilla, chocolate, red velvet, lemon, caramel, and carrot. Custom flavors can be arranged too!
+        </div>
+      </div>
+    </div>
+
+    {% comment %} 7. Gifting {% endcomment %}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="q7">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a7" aria-expanded="false" aria-controls="a7">
+          Can I send a cake as a gift to someone else?
+        </button>
+      </h2>
+      <div id="a7" class="accordion-collapse collapse" aria-labelledby="q7" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Definitely! Just provide their name, address, and phone number, and we’ll handle the sweet surprise.
+        </div>
+      </div>
+    </div>
+
+    {% comment %} 8. Cancellation {% endcomment %}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="q8">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a8" aria-expanded="false" aria-controls="a8">
+          What happens if I need to cancel my order?
+        </button>
+      </h2>
+      <div id="a8" class="accordion-collapse collapse" aria-labelledby="q8" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          You can cancel up to 24 hours before pickup or delivery. Custom orders may not be refundable once baking has started.
+        </div>
+      </div>
+    </div>
+
+    {% comment %} 9. Pickup {% endcomment %}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="q9">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a9" aria-expanded="false" aria-controls="a9">
+          Can I pick up my order instead of delivery?
+        </button>
+      </h2>
+      <div id="a9" class="accordion-collapse collapse" aria-labelledby="q9" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Absolutely! Pickup is available in Tsomo. We’ll confirm the time and address once your order is placed.
+        </div>
+      </div>
+    </div>
+
+    {% comment %} 10. Custom Designs {% endcomment %}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="q10">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a10" aria-expanded="false" aria-controls="a10">
+          Do you make custom cakes or designs?
+        </button>
+      </h2>
+      <div id="a10" class="accordion-collapse collapse" aria-labelledby="q10" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Yes! We love bringing your ideas to life. Just share your theme or inspiration when placing your order.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

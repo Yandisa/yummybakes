@@ -1,0 +1,11 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<section class="container py-5 text-center">
+  <h2 class="fw-bold">Thank You {{ name }}!</h2>
+  <p>Your order has been sent. You can now confirm it on WhatsApp:</p>
+  <a href="{{ whatsapp_url }}" target="_blank" class="btn btn-success btn-lg mt-3">
+    <i class="fa fa-whatsapp"></i> Send via WhatsApp
+  </a>
+</section>
+{% endblock %}

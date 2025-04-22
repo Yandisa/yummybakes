@@ -1,0 +1,8 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<section class="container py-5 text-center">
+  <h1 class="display-4 text-danger">Oops! Page Not Found (404)</h1>
+  <p class="lead text-muted">It looks like the page you're looking for doesn’t exist.</p>
+  <a href="{% url 'home' %}" class="btn btn-warning mt-3">Back to Homepage</a>
+</section>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Carousel Background -->
+<div class="carousel-container position-relative">
+  <div id="backgroundCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="7000" data-bs-pause="hover">
+    <div class="carousel-inner">
+      <div class="carousel-item active zoom-in">
+        <img src="{% static 'images/balloon_decor.jpg' %}" class="d-block w-100" alt="Balloon Decorations">
+        <div class="carousel-caption d-block">
+          <h5 class="fw-bold">Balloon Magic</h5>
+          <p>Bring your celebrations to life with themed balloon garlands.</p>
+        </div>
+      </div>
+      <div class="carousel-item slide-up">
+        <img src="{% static 'images/kids_custom_cake.jpg' %}" class="d-block w-100" alt="Kids' Customized Cakes">
+        <div class="carousel-caption d-block">
+          <h5 class="fw-bold">Custom Kids Cakes</h5>
+          <p>Personalized bakes to make their day unforgettable.</p>
+        </div>
+      </div>
+      <div class="carousel-item blur-in">
+        <img src="{% static 'images/wedding_cake.jpg' %}" class="d-block w-100" alt="Wedding Cakes">
+        <div class="carousel-caption d-block">
+          <h5 class="fw-bold">Elegant Wedding Cakes</h5>
+          <p>Crafted with elegance for your special day.</p>
+        </div>
+      </div>
+      <div class="carousel-item zoom-in">
+        <img src="{% static 'images/weekly_specials.jpg' %}" class="d-block w-100" alt="Weekly Specials">
+        <div class="carousel-caption d-block">
+          <h5 class="fw-bold">Weekly Specials</h5>
+          <p>New delicious treats every week – stay tuned!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carousel Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#backgroundCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#backgroundCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <!-- Overlay Hero Content -->
+  <section class="hero-content d-flex align-items-center justify-content-center text-center">
+    <div class="hero-text text-shadow px-4">
+      <h1 class="display-4 fw-bold mb-3" style="color: #fff8f0;">Crafted for Moments That Matter</h1>
+      <p class="lead mb-4" style="color: #fff2e0;">From birthdays to sweet surprises — every bake is handmade with love and attention to detail.</p>
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="{% url 'order' %}" class="btn btn-gold btn-lg px-4 py-2">Place an Order</a>
+        <a href="{% url 'menu' %}" class="btn btn-outline-light btn-lg px-4 py-2">Browse Menu</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scroll Down Hint Arrow -->
+  <a href="#featured-creations" class="scroll-hint">
+    <i class="fas fa-angle-down"></i>
+  </a>
+</div>
+
+<!-- This Week’s Featured Creations -->
+<section class="container py-5" id="featured-creations">
+  <div class="text-center mb-4">
+    <h2 class="fw-bold">This Week’s Featured Creations</h2>
+    <p class="text-muted">A peek into our most loved custom bakes and magical setups from the past week.</p>
+  </div>
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="p-4 bg-white border rounded shadow-sm h-100 text-center">
+        <img src="{% static 'images/tradcake.png' %}" class="img-fluid rounded mb-3" style="max-height: 300px; object-fit: cover;" alt="Xhosa Traditional Cake">
+        <h5 class="fw-semibold">Xhosa-Inspired Tiered Cake</h5>
+        <p class="text-muted">A custom creation for a cultural celebration — bold patterns, rich flavor, and unforgettable design.</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="p-4 bg-white border rounded shadow-sm h-100 text-center">
+        <img src="{% static 'images/garland_2.png' %}" class="img-fluid rounded mb-3" style="max-height: 300px; object-fit: cover;" alt="Balloon Garland Setup">
+        <h5 class="fw-semibold">Magical Balloon Garland Setup</h5>
+        <p class="text-muted">Perfect for birthdays and mini cake pickups — this setup turned a simple moment into a stunning memory.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- See More Button -->
+  <div class="text-center mt-4">
+    <a href="{% url 'gallery' %}" class="btn btn-gold btn-lg px-4">See More in Gallery</a>
+  </div>
+</section>
+
+
+{% if featured_testimonial %}
+<section class="container my-5">
+  <div class="p-4 bg-light border rounded shadow-sm">
+    <blockquote class="blockquote text-center mb-0">
+      <p class="mb-2">“{{ featured_testimonial.message }}”</p>
+      <footer class="blockquote-footer">{{ featured_testimonial.name }}{% if featured_testimonial.location %}, {{ featured_testimonial.location }}{% endif %}</footer>
+    </blockquote>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}
