@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <title>{% block title %}Yummy Bakes{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="canonical" href="https://www.yummybakes.co.za/" />
+  <link rel="canonical" href="https://www.yummybakes.co.za/">
   <meta name="description" content="Yummy Bakes – Custom cakes, cupcakes, cookies, malva pudding & party packs. Handcrafted with love in Tsomo for birthdays, weddings & sweet occasions.">
   <meta name="keywords" content="Yummy Bakes, cakes Tsomo, cupcakes, cookies, malva pudding, party packs, custom cakes, bakery Tsomo">
   <meta name="author" content="Yummy Bakes">
@@ -21,49 +21,53 @@
   <meta name="twitter:title" content="Yummy Bakes – Custom Cakes & Treats">
   <meta name="twitter:image" content="https://www.yummybakes.co.za/static/images/share-preview.png">
 
-  <!-- Fonts -->
+  {% block preload %}{% endblock %}
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   {% block extra_css %}{% endblock %}
 </head>
 <body>
 
-<!-- NAVBAR -->
+<!-- NAV -->
 <header class="yb-nav" id="yb-nav">
-  <div class="yb-nav__inner">
-    <a class="yb-nav__brand" href="{% url 'home' %}">
-      <img src="{% static 'images/logo.png' %}" alt="Yummy Bakes" class="yb-nav__logo">
-      <span class="yb-nav__name">Yummy Bakes</span>
-    </a>
-
-    <nav class="yb-nav__links">
-      <a href="{% url 'home' %}" class="yb-nav__link">Home</a>
-      <a href="{% url 'menu' %}" class="yb-nav__link">Menu</a>
-      <a href="{% url 'gallery' %}" class="yb-nav__link">Gallery</a>
-      <a href="{% url 'about' %}" class="yb-nav__link">About</a>
-      <a href="{% url 'testimonials' %}" class="yb-nav__link">Reviews</a>
-      <a href="{% url 'contact' %}" class="yb-nav__link">Contact</a>
-      <a href="{% url 'faq' %}" class="yb-nav__link">FAQ</a>
-      {% if user.is_authenticated %}
-        <a href="{% url 'admin:index' %}" class="yb-nav__link">Admin</a>
-        <form method="POST" action="{% url 'logout' %}" style="display:inline;">
-          {% csrf_token %}
-          <button class="yb-nav__link yb-nav__link--logout" type="submit">Logout</button>
-        </form>
-      {% else %}
-        <a href="/admin/login/" class="yb-nav__link">Login</a>
-      {% endif %}
-      <a href="{% url 'order' %}" class="yb-nav__cta">Order Now</a>
-    </nav>
-
-    <button class="yb-nav__burger" id="navBurger" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
+  <div class="yb-nav__brand">
+    <img src="{% static 'images/logo.png' %}" alt="Yummy Bakes" class="yb-nav__logo">
+    <span class="yb-nav__name">Yummy Bakes</span>
   </div>
+  <nav class="yb-nav__links">
+    <a href="{% url 'home' %}" class="yb-nav__link">Home</a>
+    <div class="yb-nav__sep"></div>
+    <a href="{% url 'menu' %}" class="yb-nav__link">Menu</a>
+    <div class="yb-nav__sep"></div>
+    <a href="{% url 'gallery' %}" class="yb-nav__link">Gallery</a>
+    <div class="yb-nav__sep"></div>
+    <a href="{% url 'about' %}" class="yb-nav__link">About</a>
+    <div class="yb-nav__sep"></div>
+    <a href="{% url 'testimonials' %}" class="yb-nav__link">Reviews</a>
+    <div class="yb-nav__sep"></div>
+    <a href="{% url 'contact' %}" class="yb-nav__link">Contact</a>
+    <div class="yb-nav__sep"></div>
+    <a href="{% url 'faq' %}" class="yb-nav__link">FAQ</a>
+    {% if user.is_authenticated %}
+      <div class="yb-nav__sep"></div>
+      <a href="{% url 'admin:index' %}" class="yb-nav__link">Admin</a>
+      <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="yb-nav__link" style="background:none;border:none;cursor:pointer;">Logout</button>
+      </form>
+    {% else %}
+      <div class="yb-nav__sep"></div>
+      <a href="/admin/login/" class="yb-nav__link">Login</a>
+    {% endif %}
+    <a href="{% url 'order' %}" class="yb-nav__cta">Order Now</a>
+  </nav>
+  <button class="yb-nav__burger" id="navBurger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
 
 <!-- MOBILE MENU -->
@@ -90,7 +94,7 @@
 
 <!-- MESSAGES -->
 {% if messages %}
-<div class="yb-messages" style="padding-top: 90px;">
+<div class="yb-messages" style="padding-top:82px;">
   {% for message in messages %}
     <div class="yb-alert yb-alert--{{ message.tags }}">{{ message }}</div>
   {% endfor %}
@@ -103,47 +107,64 @@
 <!-- FOOTER -->
 <footer class="yb-footer">
   <div class="yb-footer__inner">
-    <div class="yb-footer__brand">
-      <img src="{% static 'images/logo.png' %}" alt="Yummy Bakes" class="yb-footer__logo">
-      <p class="yb-footer__tagline">Handcrafted with love<br>in Tsomo, Eastern Cape 🇿🇦</p>
-    </div>
+
     <div>
-      <h4 class="yb-footer__heading">Quick Links</h4>
+      <div class="yb-footer__logo-wrap">
+        <img src="{% static 'images/logo.png' %}" alt="Yummy Bakes" class="yb-footer__logo">
+        <span class="yb-footer__brand">Yummy Bakes</span>
+      </div>
+      <p class="yb-footer__tagline">Handcrafted with love in Tsomo, Eastern Cape, South Africa.</p>
+    </div>
+
+    <div>
+      <span class="yb-footer__heading">Quick Links</span>
       <div class="yb-footer__links">
         <a href="{% url 'menu' %}">Menu</a>
         <a href="{% url 'gallery' %}">Gallery</a>
         <a href="{% url 'order' %}">Order</a>
-        <a href="{% url 'faq' %}">FAQ</a>
+        <a href="{% url 'about' %}">About</a>
         <a href="{% url 'testimonials' %}">Testimonials</a>
+        <a href="{% url 'faq' %}">FAQ</a>
         <a href="{% url 'contact' %}">Contact</a>
       </div>
     </div>
+
     <div>
-      <h4 class="yb-footer__heading">Get in Touch</h4>
-      <div class="yb-footer__contact">
-        <a href="https://wa.me/27849523821" target="_blank" class="yb-footer__social">
-          <i class="fab fa-whatsapp"></i> WhatsApp Us
+      <span class="yb-footer__heading">Get in Touch</span>
+      <div class="yb-footer__socials">
+        <a href="https://wa.me/27849523821" target="_blank" rel="noopener" class="yb-footer__social">
+          <div class="yb-footer__social-icon"><i class="fab fa-whatsapp"></i></div>
+          +27 84 952 3821
         </a>
         <a href="mailto:xolagaju8@gmail.com" class="yb-footer__social">
-          <i class="fas fa-envelope"></i> xolagaju8@gmail.com
+          <div class="yb-footer__social-icon"><i class="fas fa-envelope"></i></div>
+          xolagaju8@gmail.com
         </a>
-        <a href="https://www.instagram.com/xola_gaju" target="_blank" class="yb-footer__social">
-          <i class="fab fa-instagram"></i> @xola_gaju
+        <a href="https://www.instagram.com/xola_gaju" target="_blank" rel="noopener" class="yb-footer__social">
+          <div class="yb-footer__social-icon"><i class="fab fa-instagram"></i></div>
+          @xola_gaju
         </a>
-        <a href="https://www.facebook.com/xolaabena.gaju" target="_blank" class="yb-footer__social">
-          <i class="fab fa-facebook-f"></i> Facebook
+        <a href="https://www.facebook.com/xolaabena.gaju" target="_blank" rel="noopener" class="yb-footer__social">
+          <div class="yb-footer__social-icon"><i class="fab fa-facebook-f"></i></div>
+          Facebook
+        </a>
+        <a href="https://www.tiktok.com/@xola_gaju" target="_blank" rel="noopener" class="yb-footer__social">
+          <div class="yb-footer__social-icon"><i class="fab fa-tiktok"></i></div>
+          TikTok
         </a>
       </div>
     </div>
+
   </div>
   <div class="yb-footer__bottom">
-    <p>© {{ current_year }} <span class="yb-footer__brand-name">Yummy Bakes ∞</span> · All rights reserved · Made with love in South Africa</p>
+    <span class="yb-footer__copy">&copy; {{ current_year }} <span>Yummy Bakes</span>. All rights reserved.</span>
+    <span class="yb-footer__copy">Tsomo &middot; Eastern Cape &middot; South Africa</span>
   </div>
 </footer>
 
 <!-- WHATSAPP FLOAT -->
 <a href="https://wa.me/27849523821?text=Hi%20Yummy%20Bakes!%20I'd%20like%20to%20ask%20about%20your%20treats."
-   class="yb-whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+   class="yb-wa" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
   <i class="fab fa-whatsapp"></i>
 </a>
 
@@ -151,25 +172,22 @@
   // Navbar scroll
   const nav = document.getElementById('yb-nav');
   window.addEventListener('scroll', () => {
-    nav.classList.toggle('yb-nav--scrolled', window.scrollY > 50);
-  });
+    nav.classList.toggle('yb-nav--scrolled', window.scrollY > 40);
+  }, { passive: true });
 
   // Mobile menu
   const burger = document.getElementById('navBurger');
   const mobileMenu = document.getElementById('mobileMenu');
   const mobileClose = document.getElementById('mobileClose');
-
-  burger.addEventListener('click', () => mobileMenu.classList.add('open'));
-  mobileClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
-  mobileMenu.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => mobileMenu.classList.remove('open'));
-  });
+  burger.addEventListener('click', () => { mobileMenu.classList.add('open'); document.body.style.overflow = 'hidden'; });
+  mobileClose.addEventListener('click', () => { mobileMenu.classList.remove('open'); document.body.style.overflow = ''; });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { mobileMenu.classList.remove('open'); document.body.style.overflow = ''; }));
 
   // Scroll reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
   // FAQ accordion
   document.querySelectorAll('.yb-faq-item__q').forEach(q => {
