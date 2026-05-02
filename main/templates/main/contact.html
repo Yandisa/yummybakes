@@ -1,103 +1,70 @@
 {% extends 'main/base.html' %}
 {% load static %}
-
 {% block title %}Contact – Yummy Bakes{% endblock %}
-
 {% block content %}
 
 <div class="yb-page-hero">
+  <span class="yb-kicker" style="color:var(--sand);margin-bottom:1rem;">-- Say Hello</span>
   <h1>Get in Touch</h1>
-  <p>Have a question or a custom request? We'd love to hear from you.</p>
+  <p>Have a question or a custom request? We&rsquo;d love to hear from you.</p>
 </div>
 
 <div class="yb-contact-grid">
-
-  <!-- CONTACT INFO -->
   <div class="yb-contact-info reveal">
-    <span style="font-size:0.75rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:0.75rem;">Reach Us</span>
-    <h3>Let's Talk Bakes</h3>
-    <p style="color:var(--text-soft); margin-bottom:2rem;">The easiest way to reach us is WhatsApp. We typically respond within a few hours.</p>
+    <span class="yb-kicker">Reach Us</span>
+    <h3>Let&rsquo;s Talk Bakes</h3>
+    <p>The easiest way to reach us is WhatsApp. We typically respond within a few hours.</p>
 
     <div class="yb-contact-item">
       <div class="yb-contact-item__icon"><i class="fab fa-whatsapp"></i></div>
-      <div>
-        <strong>WhatsApp</strong>
-        <a href="https://wa.me/27849523821" target="_blank">+27 84 952 3821</a>
-      </div>
+      <div><strong>WhatsApp</strong><a href="https://wa.me/27849523821" target="_blank">+27 84 952 3821</a></div>
     </div>
-
     <div class="yb-contact-item">
       <div class="yb-contact-item__icon"><i class="fas fa-phone"></i></div>
-      <div>
-        <strong>Phone</strong>
-        <a href="tel:+27849523821">+27 84 952 3821</a>
-      </div>
+      <div><strong>Phone</strong><a href="tel:+27849523821">+27 84 952 3821</a></div>
     </div>
-
     <div class="yb-contact-item">
       <div class="yb-contact-item__icon"><i class="fas fa-envelope"></i></div>
-      <div>
-        <strong>Email</strong>
-        <a href="mailto:xolagaju8@gmail.com">xolagaju8@gmail.com</a>
-      </div>
+      <div><strong>Email</strong><a href="mailto:xolagaju8@gmail.com">xolagaju8@gmail.com</a></div>
     </div>
-
     <div class="yb-contact-item">
       <div class="yb-contact-item__icon"><i class="fab fa-instagram"></i></div>
-      <div>
-        <strong>Instagram</strong>
-        <a href="https://www.instagram.com/xola_gaju" target="_blank">@xola_gaju</a>
-      </div>
+      <div><strong>Instagram</strong><a href="https://www.instagram.com/xola_gaju" target="_blank">@xola_gaju</a></div>
     </div>
-
+    <div class="yb-contact-item">
+      <div class="yb-contact-item__icon"><i class="fab fa-facebook-f"></i></div>
+      <div><strong>Facebook</strong><a href="https://www.facebook.com/xolaabena.gaju" target="_blank">Yummy Bakes</a></div>
+    </div>
     <div class="yb-contact-item">
       <div class="yb-contact-item__icon"><i class="fas fa-map-marker-alt"></i></div>
-      <div>
-        <strong>Location</strong>
-        <span style="color:var(--text-soft);">Tsomo, Eastern Cape, South Africa</span>
-      </div>
+      <div><strong>Location</strong><span>Tsomo, Eastern Cape, South Africa</span></div>
     </div>
 
-    <!-- Map -->
-    <div style="margin-top:2rem; border-radius:var(--radius-lg); overflow:hidden; aspect-ratio:16/9;">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5522.064841271201!2d27.836810!3d-31.937346!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sza!4v1"
-        width="100%" height="100%"
-        style="border:0;"
-        allowfullscreen loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-        aria-label="Yummy Bakes location on Google Maps">
-      </iframe>
+    <div class="yb-map">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5522.064841271201!2d27.836810!3d-31.937346!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sza!4v1" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" aria-label="Our location"></iframe>
     </div>
   </div>
 
-  <!-- CONTACT FORM -->
   <div class="reveal">
-    <span style="font-size:0.75rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:0.75rem;">Send a Message</span>
-    <h3 style="margin-bottom:2rem;">We'll Get Back to You</h3>
-
-    <form method="POST" action="{% url 'contact' %}" aria-label="Contact form">
+    <span class="yb-kicker">Send a Message</span>
+    <h3 style="font-family:'Lora',serif;font-size:1.75rem;margin-bottom:2rem;">We&rsquo;ll Get Back to You</h3>
+    <form method="POST" action="{% url 'contact' %}">
       {% csrf_token %}
-
       <div class="yb-form-group">
         <label for="name">Your Name</label>
         <input type="text" name="name" id="name" required placeholder="e.g. Thandi Dlamini">
       </div>
-
       <div class="yb-form-group">
         <label for="email">Email Address</label>
         <input type="email" name="email" id="email" required placeholder="e.g. thandi@gmail.com">
       </div>
-
       <div class="yb-form-group">
         <label for="message">Your Message</label>
         <textarea name="message" id="message" rows="5" required placeholder="Tell us about your order or question..."></textarea>
       </div>
-
-      <button type="submit" class="yb-btn yb-btn--gold" style="width:100%;">Send Message</button>
+      <button type="submit" class="yb-btn yb-btn--fill" style="width:100%;justify-content:center;">Send Message</button>
     </form>
   </div>
-
 </div>
 
 {% endblock %}
