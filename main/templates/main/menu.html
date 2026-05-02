@@ -1,95 +1,72 @@
 {% extends 'main/base.html' %}
 {% load static %}
-
 {% block title %}Menu – Yummy Bakes{% endblock %}
-
 {% block content %}
 
 <div class="yb-page-hero">
+  <span class="yb-kicker" style="margin-bottom:1rem;">What We Bake</span>
   <h1>Our Menu</h1>
-  <p>Explore our handcrafted offerings — from wedding cakes to balloon garlands.</p>
+  <p>Explore our handcrafted offerings &mdash; from wedding cakes to balloon garlands.</p>
 </div>
 
-<section class="yb-section yb-section--cream">
-  <div class="yb-section__inner">
-    <div class="yb-grid yb-grid--4">
+<section class="yb-section yb-section--cream" style="padding-top:3rem;">
+  <div class="yb-menu-grid">
 
-      <a href="{% url 'menu_category' 'wedding' %}" class="yb-menu-card reveal">
-        <img src="{% static 'images/menu/wedding.jpg' %}" alt="Wedding Cakes" class="yb-menu-card__img" loading="lazy">
-        <div class="yb-menu-card__overlay">
-          <span class="yb-menu-card__label">Wedding Cakes</span>
-        </div>
-      </a>
+    <a href="{% url 'menu_category' 'wedding' %}" class="yb-menu-card">
+      <img src="{% static 'images/menu/wedding.jpg' %}" alt="Wedding Cakes" loading="lazy" decoding="async">
+      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Wedding Cakes</span></div>
+    </a>
 
-      <a href="{% url 'menu_category' 'birthday' %}" class="yb-menu-card reveal">
-        <img src="{% static 'images/menu/birthday.jpg' %}" alt="Birthday Cakes" class="yb-menu-card__img" loading="lazy">
-        <div class="yb-menu-card__overlay">
-          <span class="yb-menu-card__label">Birthday Cakes</span>
-        </div>
-      </a>
+    <a href="{% url 'menu_category' 'birthday' %}" class="yb-menu-card">
+      <img src="{% static 'images/menu/birthday.jpg' %}" alt="Birthday Cakes" loading="lazy" decoding="async">
+      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Birthday Cakes</span></div>
+    </a>
 
-      <a href="{% url 'menu_category' 'kids' %}" class="yb-menu-card reveal">
-        <img src="{% static 'images/menu/kids.jpg' %}" alt="Kids Cakes" class="yb-menu-card__img" loading="lazy">
-        <div class="yb-menu-card__overlay">
-          <span class="yb-menu-card__label">Kids Cakes</span>
-        </div>
-      </a>
+    <a href="{% url 'menu_category' 'kids' %}" class="yb-menu-card">
+      <img src="{% static 'images/menu/kids.jpg' %}" alt="Kids Cakes" loading="lazy" decoding="async">
+      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Kids Cakes</span></div>
+    </a>
 
-      <a href="{% url 'menu_category' 'custom' %}" class="yb-menu-card reveal">
-        <img src="{% static 'images/menu/custom.jpg' %}" alt="Custom Designs" class="yb-menu-card__img" loading="lazy">
-        <div class="yb-menu-card__overlay">
-          <span class="yb-menu-card__label">Custom Designs</span>
-        </div>
-      </a>
+    <a href="{% url 'menu_category' 'custom' %}" class="yb-menu-card">
+      <img src="{% static 'images/menu/custom.jpg' %}" alt="Custom Designs" loading="lazy" decoding="async">
+      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Custom Designs</span></div>
+    </a>
 
-      <a href="{% url 'menu_category' 'cupcakes' %}" class="yb-menu-card reveal">
-        <img src="{% static 'images/menu/cupcakes.jpg' %}" alt="Cupcakes" class="yb-menu-card__img" loading="lazy">
-        <div class="yb-menu-card__overlay">
-          <span class="yb-menu-card__label">Cupcakes</span>
-        </div>
-      </a>
+    <a href="{% url 'menu_category' 'cupcakes' %}" class="yb-menu-card">
+      <img src="{% static 'images/menu/cupcakes.jpg' %}" alt="Cupcakes" loading="lazy" decoding="async">
+      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Cupcakes</span></div>
+    </a>
 
-      <a href="{% url 'menu_category' 'muffins' %}" class="yb-menu-card reveal">
-        <img src="{% static 'images/menu/muffins.jpg' %}" alt="Muffins" class="yb-menu-card__img" loading="lazy">
-        <div class="yb-menu-card__overlay">
-          <span class="yb-menu-card__label">Muffins</span>
-        </div>
-      </a>
+    <a href="{% url 'menu_category' 'muffins' %}" class="yb-menu-card">
+      <img src="{% static 'images/menu/muffins.jpg' %}" alt="Muffins" loading="lazy" decoding="async">
+      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Muffins</span></div>
+    </a>
 
-      <a href="{% url 'menu_category' 'scones' %}" class="yb-menu-card reveal">
-        <img src="{% static 'images/menu/scones.jpg' %}" alt="Scones" class="yb-menu-card__img" loading="lazy">
-        <div class="yb-menu-card__overlay">
-          <span class="yb-menu-card__label">Scones</span>
-        </div>
-      </a>
+    <a href="{% url 'menu_category' 'scones' %}" class="yb-menu-card">
+      <img src="{% static 'images/menu/scones.jpg' %}" alt="Scones" loading="lazy" decoding="async">
+      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Scones</span></div>
+    </a>
 
-      <a href="{% url 'menu_category' 'party_packs' %}" class="yb-menu-card reveal">
-        <img src="{% static 'images/menu/party_packs.jpg' %}" alt="Party Packs" class="yb-menu-card__img" loading="lazy">
-        <div class="yb-menu-card__overlay">
-          <span class="yb-menu-card__label">Party Packs</span>
-        </div>
-      </a>
+    <a href="{% url 'menu_category' 'party_packs' %}" class="yb-menu-card">
+      <img src="{% static 'images/menu/party_packs.jpg' %}" alt="Party Packs" loading="lazy" decoding="async">
+      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Party Packs</span></div>
+    </a>
 
-      <a href="{% url 'menu_category' 'balloons' %}" class="yb-menu-card reveal">
-        <img src="{% static 'images/menu/balloons.jpg' %}" alt="Balloon Garlands" class="yb-menu-card__img" loading="lazy">
-        <div class="yb-menu-card__overlay">
-          <span class="yb-menu-card__label">Balloon Garlands</span>
-        </div>
-      </a>
+    <a href="{% url 'menu_category' 'balloons' %}" class="yb-menu-card">
+      <img src="{% static 'images/menu/balloons.jpg' %}" alt="Balloon Garlands" loading="lazy" decoding="async">
+      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Balloon Garlands</span></div>
+    </a>
 
-      <a href="{% url 'menu_category' 'specials' %}" class="yb-menu-card reveal">
-        <img src="{% static 'images/menu/specials.jpeg' %}" alt="Specials" class="yb-menu-card__img" loading="lazy">
-        <div class="yb-menu-card__overlay">
-          <span class="yb-menu-card__label">Specials</span>
-        </div>
-      </a>
+    <a href="{% url 'menu_category' 'specials' %}" class="yb-menu-card">
+      <img src="{% static 'images/menu/specials.jpeg' %}" alt="Specials" loading="lazy" decoding="async">
+      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Specials</span></div>
+    </a>
 
-    </div>
+  </div>
 
-    <div style="text-align:center; margin-top:4rem;" class="reveal">
-      <p style="color:var(--text-soft); margin-bottom:1.5rem;">See something you love? Let's make it happen.</p>
-      <a href="{% url 'order' %}" class="yb-btn yb-btn--gold">Place a Custom Order</a>
-    </div>
+  <div style="text-align:center;padding:4rem 2rem 0;" class="reveal">
+    <p style="color:var(--soft);margin-bottom:1.5rem;font-size:0.95rem;">See something you love? Let&rsquo;s make it happen.</p>
+    <a href="{% url 'order' %}" class="yb-btn yb-btn--fill">Place a Custom Order</a>
   </div>
 </section>
 
