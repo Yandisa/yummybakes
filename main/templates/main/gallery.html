@@ -1,38 +1,33 @@
 {% extends 'main/base.html' %}
 {% load static %}
-
 {% block title %}Gallery – Yummy Bakes{% endblock %}
-
 {% block content %}
 
 <div class="yb-gallery-hero">
-  <h1>Our Gallery</h1>
+  <span class="yb-kicker yb-kicker--center yb-kicker--sand" style="margin-bottom:1rem;">Our Work</span>
+  <h1>The Gallery</h1>
   <p>Every image is a bake we poured our heart into.</p>
 </div>
 
 <div class="yb-gallery-grid">
   {% for image in images %}
-  <div class="yb-gallery-item reveal" onclick="openLightbox('{{ image.image.url|escapejs }}', '{{ image.title|escapejs }}')">
-    <img src="{{ image.image.url }}" alt="{{ image.title }}" loading="lazy">
-    <div class="yb-gallery-item__overlay">
-      <i class="fas fa-expand"></i>
-    </div>
+  <div class="yb-gallery-item reveal" onclick="openLightbox('{{ image.image.url|escapejs }}','{{ image.title|escapejs }}')">
+    <img src="{{ image.image.url }}" alt="{{ image.title }}" loading="lazy" decoding="async" width="400" height="400">
+    <div class="yb-gallery-item__overlay"><i class="fas fa-expand-alt"></i></div>
   </div>
   {% empty %}
-  <div style="grid-column: 1/-1; text-align:center; padding: 5rem 2rem; color: var(--text-soft);">
-    <i class="fas fa-images" style="font-size:3rem; color:var(--cream-dark); margin-bottom:1rem; display:block;"></i>
-    <p>No gallery images yet — check back soon!</p>
+  <div style="grid-column:1/-1;text-align:center;padding:5rem 2rem;color:var(--soft);">
+    <p>No gallery images yet &mdash; check back soon.</p>
   </div>
   {% endfor %}
 </div>
 
-<div style="text-align:center; padding: 2rem 2rem 5rem;" class="reveal">
-  <a href="{% url 'order' %}" class="yb-btn yb-btn--gold">Order a Custom Design</a>
+<div style="text-align:center;padding:3rem 2rem 5rem;" class="reveal">
+  <a href="{% url 'order' %}" class="yb-btn yb-btn--fill">Order a Custom Design</a>
 </div>
 
-<!-- LIGHTBOX -->
-<div class="yb-lightbox" id="lightbox" onclick="closeLightbox(event)">
-  <button class="yb-lightbox__close" onclick="closeLightbox()">&times;</button>
+<div class="yb-lightbox" id="lightbox">
+  <button class="yb-lightbox__close" id="lightboxClose"><i class="fas fa-times"></i></button>
   <img class="yb-lightbox__img" id="lightboxImg" src="" alt="">
   <p class="yb-lightbox__title" id="lightboxTitle"></p>
 </div>
@@ -47,12 +42,14 @@
     document.getElementById('lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
-  function closeLightbox(e) {
-    if (!e || e.target === document.getElementById('lightbox') || e.target.classList.contains('yb-lightbox__close')) {
-      document.getElementById('lightbox').classList.remove('open');
-      document.body.style.overflow = '';
-    }
-  }
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  document.getElementById('lightboxClose').addEventListener('click', () => {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+    document.getElementById('lightboxImg').src = '';
+  });
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) { this.classList.remove('open'); document.body.style.overflow = ''; document.getElementById('lightboxImg').src = ''; }
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; } });
 </script>
 {% endblock %}
