@@ -1,86 +1,58 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
+{% block title %}Gallery – Yummy Bakes{% endblock %}
+
 {% block content %}
-<section class="container py-5">
-  <div class="text-center mb-4">
-    <h2 class="fw-bold display-5 mb-3">Our Gallery</h2>
-    <p class="text-muted lead">A glimpse of our sweet creations</p>
-  </div>
 
-  <div class="row g-4">
-    {% for image in images %}
-    <div class="col-6 col-md-4 col-lg-3">
-      <div class="card border-0 shadow-sm h-100 overflow-hidden hover-scale">
-        <div class="gallery-img-wrapper position-relative">
-          <img src="{{ image.image.url }}"
-               class="gallery-img img-fluid"
-               alt="{{ image.title }}"
-               loading="lazy">
-          <div class="img-overlay position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-0 transition-all">
-            <button class="btn btn-light btn-sm position-absolute top-50 start-50 translate-middle"
-                    data-bs-toggle="modal"
-                    data-bs-target="#galleryModal"
-                    onclick="showImage('{{ image.image.url|escapejs }}', '{{ image.title|escapejs }}')">
-              View Full Size
-            </button>
-          </div>
-        </div>
-        <div class="card-body text-center">
-          <h6 class="card-title mb-0">{{ image.title }}</h6>
-        </div>
-      </div>
-    </div>
-    {% empty %}
-    <div class="col-12 text-center py-5">
-      <div class="alert alert-info">No images available yet. Check back soon!</div>
-    </div>
-    {% endfor %}
-  </div>
-</section>
-
-<!-- Modal -->
-<div class="modal fade" id="galleryModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl">
-    <div class="modal-content border-0 shadow-lg">
-      <div class="modal-header border-0 pb-0">
-        <h5 class="modal-title fs-5" id="modalTitle"></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body p-4">
-        <div class="ratio ratio-1x1">
-          <img id="modalImage" class="img-fluid object-fit-contain bg-light rounded-3" alt="Selected Design">
-        </div>
-      </div>
-      <div class="modal-footer border-0 justify-content-center">
-        <a id="orderButton" href="#" class="btn btn-warning fw-semibold px-5 py-2">
-          <i class="bi bi-cart3 me-2"></i>Order This Design
-        </a>
-      </div>
-    </div>
-  </div>
+<div class="yb-gallery-hero">
+  <h1>Our Gallery</h1>
+  <p>Every image is a bake we poured our heart into.</p>
 </div>
+
+<div class="yb-gallery-grid">
+  {% for image in images %}
+  <div class="yb-gallery-item reveal" onclick="openLightbox('{{ image.image.url|escapejs }}', '{{ image.title|escapejs }}')">
+    <img src="{{ image.image.url }}" alt="{{ image.title }}" loading="lazy">
+    <div class="yb-gallery-item__overlay">
+      <i class="fas fa-expand"></i>
+    </div>
+  </div>
+  {% empty %}
+  <div style="grid-column: 1/-1; text-align:center; padding: 5rem 2rem; color: var(--text-soft);">
+    <i class="fas fa-images" style="font-size:3rem; color:var(--cream-dark); margin-bottom:1rem; display:block;"></i>
+    <p>No gallery images yet — check back soon!</p>
+  </div>
+  {% endfor %}
+</div>
+
+<div style="text-align:center; padding: 2rem 2rem 5rem;" class="reveal">
+  <a href="{% url 'order' %}" class="yb-btn yb-btn--gold">Order a Custom Design</a>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="yb-lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="yb-lightbox__close" onclick="closeLightbox()">&times;</button>
+  <img class="yb-lightbox__img" id="lightboxImg" src="" alt="">
+  <p class="yb-lightbox__title" id="lightboxTitle"></p>
+</div>
+
 {% endblock %}
 
 {% block extra_js %}
 <script>
-  function showImage(src, title) {
-    const modalImage = document.getElementById("modalImage");
-    const modalTitle = document.getElementById("modalTitle");
-    const orderButton = document.getElementById("orderButton");
-
-    modalImage.src = src;
-    modalImage.alt = title;
-    modalTitle.textContent = title;
-    orderButton.href = "{% url 'order' %}?item=" + encodeURIComponent(title);
+  function openLightbox(src, title) {
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightboxTitle').textContent = title;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
   }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.hover-scale').forEach(card => {
-      const overlay = card.querySelector('.img-overlay');
-      card.addEventListener('mouseenter', () => overlay.style.opacity = '0.9');
-      card.addEventListener('mouseleave', () => overlay.style.opacity = '0');
-    });
-  });
+  function closeLightbox(e) {
+    if (!e || e.target === document.getElementById('lightbox') || e.target.classList.contains('yb-lightbox__close')) {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 </script>
 {% endblock %}
