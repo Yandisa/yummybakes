@@ -1,25 +1,22 @@
 {% extends 'main/base.html' %}
 {% load static %}
-
 {% block title %}Place an Order – Yummy Bakes{% endblock %}
-
 {% block content %}
 
 <div class="yb-page-hero">
+  <span class="yb-kicker" style="color:var(--sand);margin-bottom:1rem;">-- Let&rsquo;s Get Started</span>
   <h1>Place Your Order</h1>
-  <p>Submit your details below and we'll confirm everything with you directly.</p>
+  <p>Submit your details below and we will confirm everything with you directly.</p>
 </div>
 
 <div class="yb-form-wrap">
 
-  <div style="background:var(--cream-dark); border-left:4px solid var(--gold); border-radius:var(--radius); padding:1.25rem 1.5rem; margin-bottom:2rem;" class="reveal">
-    <strong style="color:var(--choc); font-size:0.9rem;">📋 How it works:</strong>
-    <p style="color:var(--text-soft); font-size:0.9rem; margin-top:0.5rem; margin-bottom:0;">
-      After submitting, we'll confirm availability, pricing, and payment. A 50% deposit is required to secure your booking.
-    </p>
+  <div class="yb-form-note reveal">
+    <strong>How it works</strong>
+    After submitting, we will confirm availability, pricing and payment details. A 50% deposit is required to secure your booking.
   </div>
 
-  <form action="" method="POST" enctype="multipart/form-data" aria-label="Order form" class="reveal">
+  <form action="" method="POST" enctype="multipart/form-data" class="reveal">
     {% csrf_token %}
 
     {% if form.errors %}
@@ -36,7 +33,7 @@
     </div>
 
     <div class="yb-form-group">
-      <label for="email">Email Address <span style="font-weight:400; color:var(--text-soft);">(optional)</span></label>
+      <label for="email">Email Address <span style="font-weight:400;color:var(--soft);">(optional)</span></label>
       <input type="email" name="email" id="email" placeholder="e.g. thandi@gmail.com"
              value="{{ form.email.value|default_if_none:'' }}">
     </div>
@@ -57,8 +54,7 @@
 
     <div class="yb-form-group">
       <label for="date">Preferred Date *</label>
-      <input type="date" name="date" id="date" required
-             value="{{ form.date.value|default_if_none:'' }}">
+      <input type="date" name="date" id="date" required value="{{ form.date.value|default_if_none:'' }}">
       {% if form.date.errors %}<ul>{% for e in form.date.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
     </div>
 
@@ -68,22 +64,21 @@
     </div>
 
     <div class="yb-form-group">
-      <label for="reference_image">Reference Image <span style="font-weight:400; color:var(--text-soft);">(optional)</span></label>
-      <input type="file" name="reference_image" id="reference_image" accept="image/*" onchange="previewImage(event)"
-             style="padding: 0.65rem 1rem;">
-      <div id="imagePreviewContainer" style="display:none; margin-top:1rem; text-align:center;">
-        <img id="imagePreview" style="max-height:260px; border-radius:var(--radius); box-shadow:var(--shadow-sm);" alt="Preview">
+      <label for="reference_image">Reference Image <span style="font-weight:400;color:var(--soft);">(optional)</span></label>
+      <input type="file" name="reference_image" id="reference_image" accept="image/*" onchange="previewImage(event)">
+      <div id="imgPreview" style="display:none;margin-top:1rem;text-align:center;">
+        <img id="imgPreviewEl" style="max-height:240px;border-radius:4px;border:1px solid rgba(30,18,8,0.1);" alt="Preview">
       </div>
     </div>
 
-    <button type="submit" class="yb-btn yb-btn--gold" style="width:100%; justify-content:center; font-size:1rem; padding:1rem;">
+    <button type="submit" class="yb-btn yb-btn--fill" style="width:100%;justify-content:center;font-size:0.85rem;padding:15px;">
       Submit Order
     </button>
   </form>
 
-  <p style="text-align:center; color:var(--text-soft); font-size:0.875rem; margin-top:1.5rem;">
-    Prefer to order via WhatsApp?
-    <a href="https://wa.me/27849523821" target="_blank" style="color:var(--gold); font-weight:600;">Chat with us directly</a>
+  <p style="text-align:center;color:var(--soft);font-size:0.875rem;margin-top:1.5rem;">
+    Prefer WhatsApp?
+    <a href="https://wa.me/27849523821" target="_blank" style="color:var(--terra);font-weight:600;">Chat with us directly</a>
   </p>
 </div>
 
@@ -91,16 +86,15 @@
 
 {% block extra_js %}
 <script>
-  function previewImage(event) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        document.getElementById('imagePreview').src = e.target.result;
-        document.getElementById('imagePreviewContainer').style.display = 'block';
-      };
-      reader.readAsDataURL(file);
-    }
+  function previewImage(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      document.getElementById('imgPreviewEl').src = ev.target.result;
+      document.getElementById('imgPreview').style.display = 'block';
+    };
+    reader.readAsDataURL(file);
   }
 </script>
 {% endblock %}
