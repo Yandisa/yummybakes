@@ -1,46 +1,77 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
-{% block title %}Yummy Bakes – Handcrafted Cakes & Treats{% endblock %}
+{% block title %}Yummy Bakes – Handcrafted Cakes & Treats, Tsomo{% endblock %}
+
+{% block preload %}
+<link rel="preload" as="image" href="{% static 'images/main.jpg' %}" fetchpriority="high">
+{% endblock %}
 
 {% block content %}
 
 <!-- HERO -->
 <section class="yb-hero">
-  <div class="yb-hero__bg" style="background-image: url('{% static 'images/main.png' %}');"></div>
-  <div class="yb-hero__grain"></div>
-  <div class="yb-hero__content">
-    <span class="yb-hero__eyebrow">Tsomo · Eastern Cape · South Africa</span>
+  <div class="yb-hero__left">
+    <div class="yb-hero__overline">
+      <div class="yb-hero__overline-line"></div>
+      <span>Tsomo &middot; Eastern Cape &middot; South Africa</span>
+    </div>
     <h1 class="yb-hero__title">
-      Baked for<br><em>Moments That Matter</em>
+      Baked for<br>
+      <em>Moments</em><br>
+      That Matter
     </h1>
-    <p class="yb-hero__sub">Custom cakes, cupcakes & party treats — handcrafted with love for birthdays, weddings & every sweet occasion.</p>
+    <p class="yb-hero__sub">Custom cakes, cupcakes and party treats &mdash; handcrafted with love for birthdays, weddings and every sweet occasion worth celebrating.</p>
     <div class="yb-hero__actions">
-      <a href="{% url 'order' %}" class="yb-btn yb-btn--gold">Place an Order</a>
-      <a href="{% url 'menu' %}" class="yb-btn yb-btn--outline">Explore Menu</a>
+      <a href="{% url 'order' %}" class="yb-btn yb-btn--fill">Place an Order</a>
+      <a href="{% url 'menu' %}" class="yb-btn yb-btn--ghost">View Menu</a>
+    </div>
+  </div>
+  <div class="yb-hero__right">
+    <img
+      src="{% static 'images/main.jpg' %}"
+      alt="Beautiful custom cake by Yummy Bakes"
+      class="yb-hero__img"
+      fetchpriority="high"
+      decoding="async"
+      width="800"
+      height="1000"
+    >
+    <div class="yb-hero__badge">
+      <span class="yb-hero__badge-num">500+</span>
+      <span class="yb-hero__badge-label">Cakes Delivered</span>
     </div>
   </div>
 </section>
 
-<!-- STATS STRIP -->
+<!-- TICKER -->
+<div class="yb-ticker" aria-hidden="true">
+  <div class="yb-ticker__inner">
+    {% with items="Custom Cakes,Birthday Cakes,Wedding Cakes,Cupcakes,Balloon Garlands,Party Packs,Muffins,Scones,Kids Cakes,Local Delivery,Custom Cakes,Birthday Cakes,Wedding Cakes,Cupcakes,Balloon Garlands,Party Packs,Muffins,Scones,Kids Cakes,Local Delivery" %}
+    {% for item in items.split %}
+      <span class="yb-ticker__item">{{ item }}<span class="yb-ticker__dot"></span></span>
+    {% endfor %}
+    {% endwith %}
+  </div>
+</div>
+
+<!-- STATS -->
 <div class="yb-stats">
-  <div class="yb-stats__inner">
-    <div class="yb-stats__item reveal">
-      <span class="yb-stats__num">500+</span>
-      <span class="yb-stats__label">Cakes Delivered</span>
-    </div>
-    <div class="yb-stats__item reveal">
-      <span class="yb-stats__num">5★</span>
-      <span class="yb-stats__label">Customer Rating</span>
-    </div>
-    <div class="yb-stats__item reveal">
-      <span class="yb-stats__num">10+</span>
-      <span class="yb-stats__label">Cake Categories</span>
-    </div>
-    <div class="yb-stats__item reveal">
-      <span class="yb-stats__num">100%</span>
-      <span class="yb-stats__label">Made with Love</span>
-    </div>
+  <div class="yb-stat reveal">
+    <span class="yb-stat__num">500+</span>
+    <span class="yb-stat__label">Cakes Delivered</span>
+  </div>
+  <div class="yb-stat reveal">
+    <span class="yb-stat__num">5.0</span>
+    <span class="yb-stat__label">Customer Rating</span>
+  </div>
+  <div class="yb-stat reveal">
+    <span class="yb-stat__num">10+</span>
+    <span class="yb-stat__label">Cake Categories</span>
+  </div>
+  <div class="yb-stat reveal">
+    <span class="yb-stat__num">100%</span>
+    <span class="yb-stat__label">Handcrafted</span>
   </div>
 </div>
 
@@ -48,62 +79,60 @@
 {% if featured_cakes %}
 <section class="yb-section yb-section--cream">
   <div class="yb-section__inner">
-    <div class="yb-section__header reveal">
-      <span class="yb-section__label">Fresh from the Kitchen</span>
-      <h2 class="yb-section__title">This Week's Featured Creations</h2>
-      <p class="yb-section__sub">A peek into our most loved custom bakes and magical setups.</p>
+    <div class="yb-sec-header-row reveal">
+      <div>
+        <span class="yb-kicker">Fresh from the Kitchen</span>
+        <h2 class="yb-section-title">Featured Creations</h2>
+      </div>
+      <a href="{% url 'gallery' %}" class="yb-sec-link">View Gallery</a>
     </div>
-
-    <div class="yb-grid yb-grid--4">
+    <div class="yb-cards">
       {% for cake in featured_cakes %}
-      <div class="yb-card reveal">
-        <div class="yb-card__img-wrap">
-          <img src="{{ cake.image.url }}" alt="{{ cake.title }}" class="yb-card__img" loading="lazy">
-          <div class="yb-card__overlay">
-            <button class="yb-card__overlay-btn"
-              onclick="openLightbox('{{ cake.image.url|escapejs }}', '{{ cake.title|escapejs }}')">
-              View Full Size
-            </button>
-          </div>
+      <div class="yb-card reveal" onclick="openLightbox('{{ cake.image.url|escapejs }}','{{ cake.title|escapejs }}')">
+        <div class="yb-card__img">
+          <img
+            src="{{ cake.image.url }}"
+            alt="{{ cake.title }}"
+            loading="lazy"
+            decoding="async"
+            width="400"
+            height="533"
+          >
         </div>
         <div class="yb-card__body">
-          <p class="yb-card__title">{{ cake.title }}</p>
+          <span class="yb-card__num">0{{ forloop.counter }}</span>
+          <p class="yb-card__name">{{ cake.title }}</p>
         </div>
       </div>
       {% endfor %}
-    </div>
-
-    <div style="text-align:center; margin-top:3rem;">
-      <a href="{% url 'gallery' %}" class="yb-btn yb-btn--dark reveal">View Full Gallery</a>
     </div>
   </div>
 </section>
 {% endif %}
 
 <!-- WHY US -->
-<section class="yb-section yb-section--dark">
+<section class="yb-section yb-section--cream-d">
   <div class="yb-section__inner">
-    <div class="yb-section__header yb-section__header--center reveal">
-      <span class="yb-section__label">Why Choose Us</span>
-      <h2 class="yb-section__title">The Yummy Bakes Difference</h2>
-      <p class="yb-section__sub">Every order is treated like it's the most important one we've ever received — because it is.</p>
+    <div style="text-align:center;margin-bottom:3rem;" class="reveal">
+      <span class="yb-kicker yb-kicker--center">Why Choose Us</span>
+      <h2 class="yb-section-title">The Yummy Bakes Difference</h2>
+      <p class="yb-section-sub" style="margin:0.75rem auto 0;text-align:center;">Every order is treated like the most important one we have ever received.</p>
     </div>
-
-    <div class="yb-grid yb-grid--3">
-      <div class="yb-service reveal">
-        <div class="yb-service__icon"><i class="fas fa-heart"></i></div>
-        <h5>Made with Love</h5>
-        <p>Every bake is handcrafted from scratch using quality ingredients and genuine passion.</p>
+    <div class="yb-srv-grid">
+      <div class="yb-srv reveal">
+        <span class="yb-srv__num">01</span>
+        <p class="yb-srv__title">Made with Love</p>
+        <p class="yb-srv__text">Every bake handcrafted from scratch using quality ingredients and genuine passion for the craft.</p>
       </div>
-      <div class="yb-service reveal">
-        <div class="yb-service__icon"><i class="fas fa-paint-brush"></i></div>
-        <h5>Custom Designs</h5>
-        <p>Your vision, our hands. We bring your ideas to life with precision and creativity.</p>
+      <div class="yb-srv reveal">
+        <span class="yb-srv__num">02</span>
+        <p class="yb-srv__title">Custom Designs</p>
+        <p class="yb-srv__text">Your vision, our hands. We bring your ideas to life with precision and creativity on every order.</p>
       </div>
-      <div class="yb-service reveal">
-        <div class="yb-service__icon"><i class="fas fa-truck"></i></div>
-        <h5>Local Delivery</h5>
-        <p>We deliver across Tsomo, Cofimvaba, Ngcobo & nearby areas. Contact us to confirm.</p>
+      <div class="yb-srv reveal">
+        <span class="yb-srv__num">03</span>
+        <p class="yb-srv__title">Local Delivery</p>
+        <p class="yb-srv__text">We deliver across Tsomo, Cofimvaba, Ngcobo, Ngqamakhwe and surrounding areas. Contact us to confirm.</p>
       </div>
     </div>
   </div>
@@ -111,43 +140,46 @@
 
 <!-- TESTIMONIALS -->
 {% if testimonials %}
-<section class="yb-section yb-section--blush">
+<section class="yb-section yb-section--ink">
   <div class="yb-section__inner">
-    <div class="yb-section__header yb-section__header--center reveal">
-      <span class="yb-section__label">Happy Customers</span>
-      <h2 class="yb-section__title">What People Are Saying</h2>
+    <div style="text-align:center;margin-bottom:3rem;" class="reveal">
+      <span class="yb-kicker yb-kicker--center yb-kicker--sand">Happy Customers</span>
+      <h2 class="yb-section-title yb-section-title--light">What People Are Saying</h2>
     </div>
-
-    <div class="yb-grid yb-grid--3">
+    <div class="yb-testi-grid">
       {% for t in testimonials %}
-      <div class="yb-testimonial reveal">
-        <p class="yb-testimonial__quote">{{ t.message }}</p>
-        <span class="yb-testimonial__author">
-          — {{ t.name }}{% if t.location %}, {{ t.location }}{% endif %}
-        </span>
+      <div class="yb-testi reveal">
+        <div class="yb-testi__stars">
+          <div class="yb-testi__star"></div><div class="yb-testi__star"></div>
+          <div class="yb-testi__star"></div><div class="yb-testi__star"></div>
+          <div class="yb-testi__star"></div>
+        </div>
+        <p class="yb-testi__quote">{{ t.message }}</p>
+        <div class="yb-testi__rule"></div>
+        <span class="yb-testi__name">{{ t.name }}{% if t.location %} &mdash; {{ t.location }}{% endif %}</span>
       </div>
       {% endfor %}
     </div>
-
-    <div style="text-align:center; margin-top:3rem;">
-      <a href="{% url 'testimonials' %}" class="yb-btn yb-btn--dark reveal">Read All Reviews</a>
+    <div style="text-align:center;margin-top:3rem;" class="reveal">
+      <a href="{% url 'testimonials' %}" class="yb-btn yb-btn--outline-terra">Read All Reviews</a>
     </div>
   </div>
 </section>
 {% endif %}
 
-<!-- CTA BAND -->
+<!-- CTA -->
 <section class="yb-cta">
-  <div style="max-width:700px; margin:0 auto;" class="reveal">
-    <h2 class="yb-cta__title">Ready to Order Something Beautiful?</h2>
-    <p class="yb-cta__sub">Tell us your vision — we'll handle the rest. Custom orders welcome.</p>
-    <a href="{% url 'order' %}" class="yb-btn yb-btn--dark">Start Your Order</a>
+  <div class="reveal">
+    <span class="yb-cta__kicker">Ready to Celebrate?</span>
+    <h2 class="yb-cta__title">Order Something Beautiful</h2>
+    <p class="yb-cta__sub">Tell us your vision and we will handle the rest. Custom orders always welcome.</p>
+    <a href="{% url 'order' %}" class="yb-btn yb-btn--white">Start Your Order</a>
   </div>
 </section>
 
 <!-- LIGHTBOX -->
-<div class="yb-lightbox" id="lightbox" onclick="closeLightbox(event)">
-  <button class="yb-lightbox__close" onclick="closeLightbox()">&times;</button>
+<div class="yb-lightbox" id="lightbox">
+  <button class="yb-lightbox__close" id="lightboxClose" aria-label="Close"><i class="fas fa-times"></i></button>
   <img class="yb-lightbox__img" id="lightboxImg" src="" alt="">
   <p class="yb-lightbox__title" id="lightboxTitle"></p>
 </div>
@@ -162,12 +194,23 @@
     document.getElementById('lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
-  function closeLightbox(e) {
-    if (!e || e.target === document.getElementById('lightbox') || e.target.classList.contains('yb-lightbox__close')) {
+  document.getElementById('lightboxClose').addEventListener('click', () => {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+    document.getElementById('lightboxImg').src = '';
+  });
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.classList.remove('open');
+      document.body.style.overflow = '';
+      document.getElementById('lightboxImg').src = '';
+    }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
       document.getElementById('lightbox').classList.remove('open');
       document.body.style.overflow = '';
     }
-  }
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  });
 </script>
 {% endblock %}
