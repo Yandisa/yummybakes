@@ -4,48 +4,140 @@
 {% block content %}
 <section class="container py-5">
   <div class="text-center mb-5">
-    <h2 class="fw-bold">Our Menu</h2>
-    <p class="text-muted">From cupcakes to custom cakes — made fresh with love.</p>
+    <h2 class="fw-bold display-5 mb-3">Our Menu</h2>
+    <p class="text-muted lead">Explore our handcrafted offerings by category.</p>
   </div>
 
-  <div class="row row-cols-1 row-cols-md-3 g-4">
-
-    <!-- Product 1 -->
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <img src="{% static 'images/yummy_bakes_3.png' %}" class="card-img-top" alt="Cupcake">
-        <div class="card-body">
-          <h5 class="card-title">Vanilla Cupcakes</h5>
-          <p class="card-text">Soft, buttery, and topped with creamy vanilla frosting. (6-pack)</p>
-          <p class="fw-bold text-end">R60</p>
+  <div class="row g-4">
+    <div class="col-6 col-md-4 col-lg-3">
+      <a href="{% url 'menu_category' 'wedding' %}" class="text-decoration-none text-dark">
+        <div class="card border-0 shadow-sm h-100 overflow-hidden hover-scale">
+          <div class="gallery-img-wrapper position-relative">
+            <img src="{% static 'images/menu/wedding.jpg' %}" alt="Wedding Cakes" class="gallery-img img-fluid" loading="lazy">
+          </div>
+          <div class="card-body text-center">
+            <h6 class="fw-semibold mb-0">Wedding Cakes</h6>
+          </div>
         </div>
-      </div>
+      </a>
     </div>
 
-    <!-- Product 2 -->
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <img src="{% static 'images/yummy_bakes_1.png' %}" class="card-img-top" alt="Chocolate Cake">
-        <div class="card-body">
-          <h5 class="card-title">Chocolate Celebration Cake</h5>
-          <p class="card-text">Moist chocolate sponge with rich ganache. Customisable for birthdays!</p>
-          <p class="fw-bold text-end">R250</p>
+    <div class="col-6 col-md-4 col-lg-3">
+      <a href="{% url 'menu_category' 'birthday' %}" class="text-decoration-none text-dark">
+        <div class="card border-0 shadow-sm h-100 overflow-hidden hover-scale">
+          <div class="gallery-img-wrapper position-relative">
+            <img src="{% static 'images/menu/birthday.jpg' %}" alt="Birthday Cakes" class="gallery-img img-fluid" loading="lazy">
+          </div>
+          <div class="card-body text-center">
+            <h6 class="fw-semibold mb-0">Birthday Cakes</h6>
+          </div>
         </div>
-      </div>
+      </a>
     </div>
 
-    <!-- Product 3 -->
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <img src="{% static 'images/yummy_bakes_2.png' %}" class="card-img-top" alt="Cookies">
-        <div class="card-body">
-          <h5 class="card-title">Sugar Cookies</h5>
-          <p class="card-text">Crispy edges and soft centres, decorated to match any theme.</p>
-          <p class="fw-bold text-end">R100 per dozen</p>
+    <div class="col-6 col-md-4 col-lg-3">
+      <a href="{% url 'menu_category' 'kids' %}" class="text-decoration-none text-dark">
+        <div class="card border-0 shadow-sm h-100 overflow-hidden hover-scale">
+          <div class="gallery-img-wrapper position-relative">
+            <img src="{% static 'images/menu/kids.jpg' %}" alt="Kids Cakes" class="gallery-img img-fluid" loading="lazy">
+          </div>
+          <div class="card-body text-center">
+            <h6 class="fw-semibold mb-0">Kids Cakes</h6>
+          </div>
         </div>
-      </div>
+      </a>
     </div>
 
+    <div class="col-6 col-md-4 col-lg-3">
+      <a href="{% url 'menu_category' 'custom' %}" class="text-decoration-none text-dark">
+        <div class="card border-0 shadow-sm h-100 overflow-hidden hover-scale">
+          <div class="gallery-img-wrapper position-relative">
+            <img src="{% static 'images/menu/custom.jpg' %}" alt="Custom Designs" class="gallery-img img-fluid" loading="lazy">
+          </div>
+          <div class="card-body text-center">
+            <h6 class="fw-semibold mb-0">Custom Designs</h6>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-6 col-md-4 col-lg-3">
+      <a href="{% url 'menu_category' 'muffins' %}" class="text-decoration-none text-dark">
+        <div class="card border-0 shadow-sm h-100 overflow-hidden hover-scale">
+          <div class="gallery-img-wrapper position-relative">
+            <img src="{% static 'images/menu/muffins.jpg' %}" alt="Muffins" class="gallery-img img-fluid" loading="lazy">
+          </div>
+          <div class="card-body text-center">
+            <h6 class="fw-semibold mb-0">Muffins</h6>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-6 col-md-4 col-lg-3">
+      <a href="{% url 'menu_category' 'cupcakes' %}" class="text-decoration-none text-dark">
+        <div class="card border-0 shadow-sm h-100 overflow-hidden hover-scale">
+          <div class="gallery-img-wrapper position-relative">
+            <img src="{% static 'images/menu/cupcakes.jpg' %}" alt="Cupcakes" class="gallery-img img-fluid" loading="lazy">
+          </div>
+          <div class="card-body text-center">
+            <h6 class="fw-semibold mb-0">Cupcakes</h6>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-6 col-md-4 col-lg-3">
+      <a href="{% url 'menu_category' 'scones' %}" class="text-decoration-none text-dark">
+        <div class="card border-0 shadow-sm h-100 overflow-hidden hover-scale">
+          <div class="gallery-img-wrapper position-relative">
+            <img src="{% static 'images/menu/scones.jpg' %}" alt="Scones" class="gallery-img img-fluid" loading="lazy">
+          </div>
+          <div class="card-body text-center">
+            <h6 class="fw-semibold mb-0">Scones</h6>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-6 col-md-4 col-lg-3">
+      <a href="{% url 'menu_category' 'party_packs' %}" class="text-decoration-none text-dark">
+        <div class="card border-0 shadow-sm h-100 overflow-hidden hover-scale">
+          <div class="gallery-img-wrapper position-relative">
+            <img src="{% static 'images/menu/party_packs.jpg' %}" alt="Party Packs" class="gallery-img img-fluid" loading="lazy">
+          </div>
+          <div class="card-body text-center">
+            <h6 class="fw-semibold mb-0">Party Packs</h6>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-6 col-md-4 col-lg-3">
+      <a href="{% url 'menu_category' 'balloons' %}" class="text-decoration-none text-dark">
+        <div class="card border-0 shadow-sm h-100 overflow-hidden hover-scale">
+          <div class="gallery-img-wrapper position-relative">
+            <img src="{% static 'images/menu/balloons.jpg' %}" alt="Balloon Garlands" class="gallery-img img-fluid" loading="lazy">
+          </div>
+          <div class="card-body text-center">
+            <h6 class="fw-semibold mb-0">Balloon Garlands</h6>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-6 col-md-4 col-lg-3">
+      <a href="{% url 'menu_category' 'specials' %}" class="text-decoration-none text-dark">
+        <div class="card border-0 shadow-sm h-100 overflow-hidden hover-scale">
+          <div class="gallery-img-wrapper position-relative">
+            <img src="{% static 'images/menu/specials.jpeg' %}" alt="Specials" class="gallery-img img-fluid" loading="lazy">
+          </div>
+          <div class="card-body text-center">
+            <h6 class="fw-semibold mb-0">Specials</h6>
+          </div>
+        </div>
+      </a>
+    </div>
   </div>
 </section>
 {% endblock %}

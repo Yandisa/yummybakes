@@ -2,10 +2,26 @@
 
 {% block content %}
 <section class="container py-5 text-center">
-  <h2 class="fw-bold">Thank You {{ name }}!</h2>
-  <p>Your order has been sent. You can now confirm it on WhatsApp:</p>
-  <a href="{{ whatsapp_url }}" target="_blank" class="btn btn-success btn-lg mt-3">
-    <i class="fa fa-whatsapp"></i> Send via WhatsApp
+  <h2 class="fw-bold">Thank You, {{ order.name }}!</h2>
+  <p class="lead">Your order has been received. You can now confirm it on WhatsApp:</p>
+
+  <a href="{{ whatsapp_url }}" target="_blank" rel="noopener" class="btn btn-success btn-lg mt-4" aria-label="Send your order via WhatsApp">
+    <i class="fa fa-whatsapp me-2" aria-hidden="true"></i> Send via WhatsApp
   </a>
+
+  <!-- Deposit & pricing message -->
+  <div class="alert alert-info mt-5 mx-auto" style="max-width: 600px;">
+    We'll be in touch soon to confirm availability, pricing, and payment instructions. A 50% deposit is required to secure your order.
+  </div>
+
+  <!-- Testimonial request -->
+  <div class="mt-5 pt-4 border-top">
+    <p class="mb-1 fw-semibold">We’d love to hear from you!</p>
+    <p class="text-muted mb-3">If you enjoyed your experience, please leave us a review or testimonial.</p>
+    <a href="{% url 'testimonials' %}" class="btn btn-outline-primary">
+      Leave a Review
+    </a>
+  </div>
 </section>
 {% endblock %}
+

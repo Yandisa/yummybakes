@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Confirmation</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f5f0eb; padding: 20px; color: #3e3e3e;">
+  <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; padding: 30px; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
+
+    <!-- Header image / logo -->
+    <div style="text-align: center;">
+      <img src="https://www.yummybakes.co.za/static/images/logo.png" alt="Yummy Bakes Logo" style="max-width: 180px; margin-bottom: 20px;">
+    </div>
+
+    <h2 style="color: #e63946; text-align: center;">Thank you, {{ order.name }}! 🎉</h2>
+
+    <p style="text-align: center;">We’ve received your order. Here’s a quick summary:</p>
+
+    <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+      <tr>
+        <td style="padding: 8px 0;"><strong>Item:</strong></td>
+        <td style="padding: 8px 0;">{{ order.item }}</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0;"><strong>Preferred Date:</strong></td>
+        <td style="padding: 8px 0;">{{ order.date }}</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0;"><strong>Phone:</strong></td>
+        <td style="padding: 8px 0;">{{ order.phone }}</td>
+      </tr>
+      {% if order.notes %}
+      <tr>
+        <td style="padding: 8px 0;"><strong>Notes:</strong></td>
+        <td style="padding: 8px 0;">{{ order.notes }}</td>
+      </tr>
+      {% endif %}
+    </table>
+
+    <!-- Pricing & deposit note -->
+    <div style="background-color: #fff3cd; color: #856404; padding: 15px; border-radius: 6px; margin: 25px 0;">
+      <strong>Please note:</strong> We'll be in touch shortly to confirm availability and pricing.
+      A 50% deposit is required to secure your booking.
+    </div>
+
+    <!-- WhatsApp link -->
+    <div style="text-align: center; margin: 30px 0;">
+      <a href="https://wa.me/27849523821" style="background-color: #25D366; color: white; padding: 12px 24px; border-radius: 5px; text-decoration: none; font-weight: bold;" target="_blank">
+        Message Us on WhatsApp
+      </a>
+    </div>
+
+    <p style="text-align: center;">We look forward to making something special for you!</p>
+
+    <!-- Gentle Testimonial Invite -->
+    <div style="text-align: center; margin: 40px 0;">
+      <p style="font-size: 16px; color: #5a524c;">
+        😊 Once you've enjoyed your cake, we'd love to hear what you thought.
+      </p>
+      <a href="https://www.yummybakes.co.za/testimonials/"
+         style="background-color: #f5e9dc; color: #3e3e3e; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: 600; border: 1px solid #d4c3b2;">
+        Leave a Testimonial
+      </a>
+    </div>
+
+    <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
+
+    <p style="font-size: 14px; text-align: center; color: #888;">
+      Yummy Bakes<br>
+      Tsomo, Eastern Cape<br>
+      Call/WhatsApp: 084 952 3821<br>
+      <a href="https://www.yummybakes.co.za" style="color: #5a524c;">www.yummybakes.co.za</a>
+    </p>
+  </div>
+</body>
+</html>
+
+

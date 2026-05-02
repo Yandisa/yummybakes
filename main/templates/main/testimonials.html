@@ -1,16 +1,55 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
-
 {% block content %}
 <section class="container py-5">
+
   <div class="text-center mb-5">
-    <h2 class="fw-bold">Customer Testimonials</h2>
-    <p class="text-muted">What our amazing customers are saying!</p>
+    <h2 class="fw-bold">We’d Love Your Feedback!</h2>
+    <p class="text-muted">If you’ve enjoyed your order, please leave us a quick note below.</p>
   </div>
 
-  <!-- Display Testimonials -->
+  <!-- Testimonial Form First -->
   <div class="row justify-content-center mb-5">
+    <div class="col-md-8">
+      <h4 class="mb-3">Leave a Testimonial</h4>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+
+      <form method="POST" class="border p-4 bg-light rounded shadow-sm" aria-label="Submit your testimonial">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="id_name" class="form-label">Your Name</label>
+          {{ form.name }}
+        </div>
+        <div class="mb-3">
+          <label for="id_location" class="form-label">Location (optional)</label>
+          {{ form.location }}
+        </div>
+        <div class="mb-3">
+          <label for="id_message" class="form-label">Message</label>
+          {{ form.message }}
+        </div>
+        {{ form.honeypot }} {# Hidden field for spam prevention #}
+
+        <div class="text-end mt-4">
+          <button type="submit" class="btn btn-warning px-4">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Testimonials List -->
+  <div class="text-center mb-4">
+    <h2 class="fw-bold">What Our Customers Say</h2>
+    <p class="text-muted">Real feedback from our happy clients.</p>
+  </div>
+
+  <div class="row justify-content-center">
     {% for t in testimonials %}
       <div class="col-md-8 mb-4">
         <div class="p-4 bg-light border rounded shadow-sm">
@@ -25,25 +64,7 @@
     {% endfor %}
   </div>
 
-  <!-- Testimonial Form -->
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <h4 class="mb-3">Leave us a testimonial 💬</h4>
-
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-success">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-
-      <form method="POST" class="border p-4 bg-light rounded shadow-sm">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <div class="text-end">
-          <button type="submit" class="btn btn-warning px-4">Submit</button>
-        </div>
-      </form>
-    </div>
-  </div>
 </section>
 {% endblock %}
+
+
