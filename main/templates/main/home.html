@@ -1,175 +1,173 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
-{% block extra_css %}
-<style>
-.hero-zoom {
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-              url("{% static 'images/main.png' %}") center center / cover no-repeat;
-  background-size: cover;
-  height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: bgZoom 1.5s ease-out forwards;
-  overflow: hidden;
-}
-
-@keyframes bgZoom {
-  from { transform: scale(1.05); }
-  to { transform: scale(1); }
-}
-
-.gallery-img-wrapper {
-  position: relative;
-  overflow: hidden;
-}
-
-.gallery-img {
-  transition: transform 0.3s ease;
-}
-
-.hover-scale:hover .gallery-img {
-  transform: scale(1.05);
-}
-
-.img-overlay {
-  transition: opacity 0.3s ease;
-}
-
-@media (max-width: 576px) {
-  .hero-zoom {
-    height: auto;
-    padding: 3rem 1rem 4rem;
-  }
-  .hero-zoom h1 { font-size: 1.8rem; line-height: 1.3; }
-  .hero-zoom p { font-size: 1rem; }
-  .hero-zoom .btn { font-size: 0.95rem; padding: 10px 24px; }
-  .hero-zoom .d-flex { flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
-}
-</style>
-{% endblock %}
+{% block title %}Yummy Bakes – Handcrafted Cakes & Treats{% endblock %}
 
 {% block content %}
 
-<!-- Hero Section -->
-<section class="hero-zoom text-white text-center">
-  <div class="container px-4 py-5">
-    <h1 class="display-5 fw-bold">Crafted for Moments That Matter</h1>
-    <p class="lead">From birthdays to sweet surprises — every bake is handmade with love and attention to detail.</p>
-    <div class="mt-4 d-flex justify-content-center gap-3 flex-wrap">
-      <a href="{% url 'order' %}" class="btn btn-warning px-4 py-2 fw-semibold">Place an Order</a>
-      <a href="{% url 'menu' %}" class="btn btn-warning px-4 py-2 fw-semibold">Browse Menu</a>
+<!-- HERO -->
+<section class="yb-hero">
+  <div class="yb-hero__bg" style="background-image: url('{% static 'images/main.png' %}');"></div>
+  <div class="yb-hero__grain"></div>
+  <div class="yb-hero__content">
+    <span class="yb-hero__eyebrow">Tsomo · Eastern Cape · South Africa</span>
+    <h1 class="yb-hero__title">
+      Baked for<br><em>Moments That Matter</em>
+    </h1>
+    <p class="yb-hero__sub">Custom cakes, cupcakes & party treats — handcrafted with love for birthdays, weddings & every sweet occasion.</p>
+    <div class="yb-hero__actions">
+      <a href="{% url 'order' %}" class="yb-btn yb-btn--gold">Place an Order</a>
+      <a href="{% url 'menu' %}" class="yb-btn yb-btn--outline">Explore Menu</a>
     </div>
   </div>
 </section>
 
-<!-- Featured Creations -->
-{% if featured_cakes %}
-<section class="container py-5" id="featured-creations">
-  <div class="text-center mb-4">
-    <h2 class="fw-bold">This Week’s Featured Creations</h2>
-    <p class="text-muted">A peek into our most loved custom bakes and magical setups from the past week.</p>
-  </div>
-
-  <div class="row g-4">
-    {% for cake in featured_cakes %}
-    <div class="col-6 col-md-4 col-lg-3">
-      <div class="card border-0 shadow-sm h-100 overflow-hidden hover-scale">
-        <div class="gallery-img-wrapper position-relative">
-          <img src="{{ cake.image.url }}"
-               class="gallery-img img-fluid"
-               alt="{{ cake.title }}"
-               loading="lazy">
-          <div class="img-overlay position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-0 transition-all">
-            <button class="btn btn-light btn-sm position-absolute top-50 start-50 translate-middle"
-                    data-bs-toggle="modal"
-                    data-bs-target="#galleryModal"
-                    onclick="showImage('{{ cake.image.url|escapejs }}', '{{ cake.title|escapejs }}')">
-              View Full Size
-            </button>
-          </div>
-        </div>
-        <div class="card-body text-center">
-          <h6 class="card-title mb-0">{{ cake.title }}</h6>
-        </div>
-      </div>
+<!-- STATS STRIP -->
+<div class="yb-stats">
+  <div class="yb-stats__inner">
+    <div class="yb-stats__item reveal">
+      <span class="yb-stats__num">500+</span>
+      <span class="yb-stats__label">Cakes Delivered</span>
     </div>
-    {% endfor %}
-  </div>
-
-  <div class="text-center mt-5">
-    <a href="{% url 'gallery' %}" class="btn btn-warning btn-lg fw-semibold px-4">See More in Gallery</a>
-  </div>
-</section>
-{% endif %}
-
-<!-- Featured Testimonials -->
-{% if testimonials %}
-<section class="container my-5">
-  <div class="text-center mb-4">
-    <h2 class="fw-bold">What Our Customers Say</h2>
-  </div>
-  <div class="row g-4">
-    {% for t in testimonials %}
-    <div class="col-md-4">
-      <div class="bg-light border rounded shadow-sm p-4 h-100">
-        <blockquote class="blockquote mb-0">
-          <p class="mb-3 fst-italic">“{{ t.message }}”</p>
-          <footer class="blockquote-footer">
-            {{ t.name }}{% if t.location %}, {{ t.location }}{% endif %}
-          </footer>
-        </blockquote>
-      </div>
+    <div class="yb-stats__item reveal">
+      <span class="yb-stats__num">5★</span>
+      <span class="yb-stats__label">Customer Rating</span>
     </div>
-    {% endfor %}
-  </div>
-</section>
-{% endif %}
-
-{% endblock %}
-
-{% block extra_js %}
-<!-- Modal Viewer -->
-<div class="modal fade" id="galleryModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl">
-    <div class="modal-content border-0 shadow-lg">
-      <div class="modal-header border-0 pb-0">
-        <h5 class="modal-title fs-5" id="modalTitle"></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body p-4">
-        <div class="ratio ratio-1x1">
-          <img id="modalImage" class="img-fluid object-fit-contain bg-light rounded-3" alt="Selected Design">
-        </div>
-      </div>
-      <div class="modal-footer border-0 justify-content-center">
-        <a id="orderButton" href="#" class="btn btn-warning fw-semibold px-5 py-2">
-          <i class="bi bi-cart3 me-2"></i>Order This Design
-        </a>
-      </div>
+    <div class="yb-stats__item reveal">
+      <span class="yb-stats__num">10+</span>
+      <span class="yb-stats__label">Cake Categories</span>
+    </div>
+    <div class="yb-stats__item reveal">
+      <span class="yb-stats__num">100%</span>
+      <span class="yb-stats__label">Made with Love</span>
     </div>
   </div>
 </div>
 
+<!-- FEATURED CREATIONS -->
+{% if featured_cakes %}
+<section class="yb-section yb-section--cream">
+  <div class="yb-section__inner">
+    <div class="yb-section__header reveal">
+      <span class="yb-section__label">Fresh from the Kitchen</span>
+      <h2 class="yb-section__title">This Week's Featured Creations</h2>
+      <p class="yb-section__sub">A peek into our most loved custom bakes and magical setups.</p>
+    </div>
+
+    <div class="yb-grid yb-grid--4">
+      {% for cake in featured_cakes %}
+      <div class="yb-card reveal">
+        <div class="yb-card__img-wrap">
+          <img src="{{ cake.image.url }}" alt="{{ cake.title }}" class="yb-card__img" loading="lazy">
+          <div class="yb-card__overlay">
+            <button class="yb-card__overlay-btn"
+              onclick="openLightbox('{{ cake.image.url|escapejs }}', '{{ cake.title|escapejs }}')">
+              View Full Size
+            </button>
+          </div>
+        </div>
+        <div class="yb-card__body">
+          <p class="yb-card__title">{{ cake.title }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div style="text-align:center; margin-top:3rem;">
+      <a href="{% url 'gallery' %}" class="yb-btn yb-btn--dark reveal">View Full Gallery</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- WHY US -->
+<section class="yb-section yb-section--dark">
+  <div class="yb-section__inner">
+    <div class="yb-section__header yb-section__header--center reveal">
+      <span class="yb-section__label">Why Choose Us</span>
+      <h2 class="yb-section__title">The Yummy Bakes Difference</h2>
+      <p class="yb-section__sub">Every order is treated like it's the most important one we've ever received — because it is.</p>
+    </div>
+
+    <div class="yb-grid yb-grid--3">
+      <div class="yb-service reveal">
+        <div class="yb-service__icon"><i class="fas fa-heart"></i></div>
+        <h5>Made with Love</h5>
+        <p>Every bake is handcrafted from scratch using quality ingredients and genuine passion.</p>
+      </div>
+      <div class="yb-service reveal">
+        <div class="yb-service__icon"><i class="fas fa-paint-brush"></i></div>
+        <h5>Custom Designs</h5>
+        <p>Your vision, our hands. We bring your ideas to life with precision and creativity.</p>
+      </div>
+      <div class="yb-service reveal">
+        <div class="yb-service__icon"><i class="fas fa-truck"></i></div>
+        <h5>Local Delivery</h5>
+        <p>We deliver across Tsomo, Cofimvaba, Ngcobo & nearby areas. Contact us to confirm.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+{% if testimonials %}
+<section class="yb-section yb-section--blush">
+  <div class="yb-section__inner">
+    <div class="yb-section__header yb-section__header--center reveal">
+      <span class="yb-section__label">Happy Customers</span>
+      <h2 class="yb-section__title">What People Are Saying</h2>
+    </div>
+
+    <div class="yb-grid yb-grid--3">
+      {% for t in testimonials %}
+      <div class="yb-testimonial reveal">
+        <p class="yb-testimonial__quote">{{ t.message }}</p>
+        <span class="yb-testimonial__author">
+          — {{ t.name }}{% if t.location %}, {{ t.location }}{% endif %}
+        </span>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div style="text-align:center; margin-top:3rem;">
+      <a href="{% url 'testimonials' %}" class="yb-btn yb-btn--dark reveal">Read All Reviews</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- CTA BAND -->
+<section class="yb-cta">
+  <div style="max-width:700px; margin:0 auto;" class="reveal">
+    <h2 class="yb-cta__title">Ready to Order Something Beautiful?</h2>
+    <p class="yb-cta__sub">Tell us your vision — we'll handle the rest. Custom orders welcome.</p>
+    <a href="{% url 'order' %}" class="yb-btn yb-btn--dark">Start Your Order</a>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="yb-lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="yb-lightbox__close" onclick="closeLightbox()">&times;</button>
+  <img class="yb-lightbox__img" id="lightboxImg" src="" alt="">
+  <p class="yb-lightbox__title" id="lightboxTitle"></p>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
 <script>
-  function showImage(src, title) {
-    const modalImage = document.getElementById("modalImage");
-    const modalTitle = document.getElementById("modalTitle");
-    const orderButton = document.getElementById("orderButton");
-
-    modalImage.src = src;
-    modalImage.alt = title;
-    modalTitle.textContent = title;
-    orderButton.href = "{% url 'order' %}?item=" + encodeURIComponent(title);
+  function openLightbox(src, title) {
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightboxTitle').textContent = title;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
   }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.hover-scale').forEach(card => {
-      const overlay = card.querySelector('.img-overlay');
-      card.addEventListener('mouseenter', () => overlay.style.opacity = '0.9');
-      card.addEventListener('mouseleave', () => overlay.style.opacity = '0');
-    });
-  });
+  function closeLightbox(e) {
+    if (!e || e.target === document.getElementById('lightbox') || e.target.classList.contains('yb-lightbox__close')) {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 </script>
 {% endblock %}
