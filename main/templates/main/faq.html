@@ -1,27 +1,30 @@
 {% extends 'main/base.html' %}
+
+{% block title %}FAQ – Yummy Bakes{% endblock %}
+
 {% block content %}
-<section class="container py-5">
-  <div class="text-center mb-5">
-    <h2 class="fw-bold">Frequently Asked Questions</h2>
-    <p class="text-muted">Here’s everything you need to know before you order.</p>
+
+<div class="yb-page-hero">
+  <h1>Frequently Asked Questions</h1>
+  <p>Everything you need to know before you order.</p>
+</div>
+
+<section class="yb-section yb-section--cream">
+  <div class="yb-faq reveal">
+
+    {% for faq in faqs %}
+    <div class="yb-faq-item">
+      <div class="yb-faq-item__q">{{ faq.1 }}</div>
+      <div class="yb-faq-item__a">{{ faq.2|safe }}</div>
+    </div>
+    {% endfor %}
+
   </div>
 
-  <div class="accordion" id="faqAccordion" role="tablist">
-    {% for faq in faqs %}
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="q{{ faq.0 }}">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a{{ faq.0 }}" 
-                  aria-expanded="false" aria-controls="a{{ faq.0 }}" role="button">
-            {{ faq.1 }}
-          </button>
-        </h2>
-        <div id="a{{ faq.0 }}" class="accordion-collapse collapse" aria-labelledby="q{{ faq.0 }}" data-bs-parent="#faqAccordion">
-          <div class="accordion-body">
-            {{ faq.2|safe }}
-          </div>
-        </div>
-      </div>
-    {% endfor %}
+  <div style="text-align:center; padding: 3rem 2rem 0;" class="reveal">
+    <p style="color:var(--text-soft); margin-bottom:1.5rem;">Still have questions? We're happy to help!</p>
+    <a href="{% url 'contact' %}" class="yb-btn yb-btn--gold">Contact Us</a>
   </div>
 </section>
+
 {% endblock %}
