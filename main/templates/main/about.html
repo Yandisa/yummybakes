@@ -1,74 +1,63 @@
 {% extends 'main/base.html' %}
 {% load static %}
-
 {% block title %}About – Yummy Bakes{% endblock %}
-
 {% block content %}
 
-<div class="yb-about-hero">
-  <h1 class="yb-about-hero__title">The Heart Behind<br><em>Every Bake</em></h1>
-  <p class="yb-about-hero__sub">A story of passion, creativity, and handcrafted love from Tsomo.</p>
+<div class="yb-page-hero">
+  <span class="yb-kicker" style="color:var(--sand);margin-bottom:1rem;">--&nbsp;Our Story</span>
+  <h1>The Heart Behind<br><em style="font-style:italic;color:var(--terra-l);">Yummy Bakes</em></h1>
+  <p>A story of passion, creativity and handcrafted love from Tsomo.</p>
 </div>
 
-<!-- FOUNDER STORY -->
 <div class="yb-about-split">
   <div class="yb-about-img reveal">
-    <img src="{% static 'images/xola_about.jpg' %}" alt="Xola – Founder of Yummy Bakes" loading="lazy">
+    <img src="{% static 'images/xola_about.jpg' %}" alt="Xola – Founder of Yummy Bakes" loading="lazy" decoding="async">
   </div>
   <div class="yb-about-text reveal">
-    <span class="yb-about-text__eyebrow">Our Story</span>
+    <span class="yb-kicker">Our Story</span>
     <h2>Meet Xola, the Baker Behind Yummy Bakes</h2>
-    <p>
-      What began as a humble kitchen hobby has blossomed into a passion for creating joyful,
-      unforgettable bakes. Founded by <strong>Xola</strong>, a self-taught baker with an eye for
-      detail and a love for celebration, Yummy Bakes brings flavour and flair to every occasion.
-    </p>
-    <p>
-      From elegant wedding cakes to playful birthday treats, we're proud to be part of your
-      sweetest moments — one slice at a time.
-    </p>
-    <blockquote>
-      "Every bake tells a story — and yours starts here."
-    </blockquote>
-    <a href="{% url 'order' %}" class="yb-btn yb-btn--gold" style="margin-top:1rem;">Order Now</a>
+    <p>What began as a humble kitchen passion has grown into a love for creating joyful, unforgettable bakes. Founded by <strong>Xola</strong>, a self-taught baker with an eye for detail and a deep love for celebration.</p>
+    <p>From elegant wedding cakes to playful birthday treats, we are proud to be part of your sweetest moments &mdash; one slice at a time.</p>
+    <div class="yb-quote">
+      <p>&ldquo;Every bake tells a story &mdash; and yours starts here.&rdquo;</p>
+    </div>
+    <a href="{% url 'order' %}" class="yb-btn yb-btn--fill">Place an Order</a>
   </div>
 </div>
 
-<!-- SERVICES -->
-<section class="yb-section yb-section--dark">
+<section class="yb-section yb-section--cream-d">
   <div class="yb-section__inner">
-    <div class="yb-section__header yb-section__header--center reveal">
-      <span class="yb-section__label">What We Offer</span>
-      <h2 class="yb-section__title">Beyond Just Cakes</h2>
-      <p class="yb-section__sub">We're here to help you celebrate every occasion in style.</p>
+    <div style="text-align:center;margin-bottom:3rem;" class="reveal">
+      <span class="yb-kicker yb-kicker--center">What We Offer</span>
+      <h2 class="yb-section-title">Beyond Just Cakes</h2>
+      <p class="yb-section-sub" style="margin:0.75rem auto 0;text-align:center;">We are here to help you celebrate every occasion in style.</p>
     </div>
-
-    <div class="yb-grid yb-grid--3">
-      <div class="yb-service reveal">
-        <div class="yb-service__icon"><i class="fas fa-birthday-cake"></i></div>
-        <h5>Custom Party Packs</h5>
-        <p>Matching cupcakes, themed sweets, and favour bags for the perfect all-in-one setup.</p>
+    <div class="yb-srv-grid">
+      <div class="yb-srv reveal">
+        <span class="yb-srv__num">01</span>
+        <p class="yb-srv__title">Custom Party Packs</p>
+        <p class="yb-srv__text">Matching cupcakes, themed sweets and favour bags for the perfect all-in-one celebration setup.</p>
       </div>
-      <div class="yb-service reveal">
-        <div class="yb-service__icon"><i class="fas fa-star"></i></div>
-        <h5>Balloon Garlands & Deco</h5>
-        <p>Camera-ready setups perfect for birthdays, cake pickups, and small events.</p>
+      <div class="yb-srv reveal">
+        <span class="yb-srv__num">02</span>
+        <p class="yb-srv__title">Balloon Garlands</p>
+        <p class="yb-srv__text">Camera-ready setups perfect for birthdays, cake pickups and intimate events of all sizes.</p>
       </div>
-      <div class="yb-service reveal">
-        <div class="yb-service__icon"><i class="fas fa-truck"></i></div>
-        <h5>Local Delivery</h5>
-        <p>Delivery available in Tsomo, Cofimvaba, Ngcobo, Ngqamakhwe & nearby areas.</p>
+      <div class="yb-srv reveal">
+        <span class="yb-srv__num">03</span>
+        <p class="yb-srv__title">Local Delivery</p>
+        <p class="yb-srv__text">Delivery available across Tsomo, Cofimvaba, Ngcobo, Ngqamakhwe and surrounding areas.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
 <section class="yb-cta">
-  <div style="max-width:600px; margin:0 auto;" class="reveal">
-    <h2 class="yb-cta__title">Let's Create Something Special</h2>
-    <p class="yb-cta__sub">Whether it's a birthday, wedding, or just because — we've got you.</p>
-    <a href="{% url 'order' %}" class="yb-btn yb-btn--dark">Start Your Order</a>
+  <div class="reveal">
+    <span class="yb-cta__kicker">Let&rsquo;s Create Together</span>
+    <h2 class="yb-cta__title">Order Something Special</h2>
+    <p class="yb-cta__sub">Whether it&rsquo;s a birthday, wedding or just because &mdash; we&rsquo;ve got you.</p>
+    <a href="{% url 'order' %}" class="yb-btn yb-btn--white">Start Your Order</a>
   </div>
 </section>
 
