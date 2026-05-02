@@ -1,29 +1,26 @@
 {% extends 'main/base.html' %}
-
 {% block title %}FAQ – Yummy Bakes{% endblock %}
-
 {% block content %}
 
 <div class="yb-page-hero">
+  <span class="yb-kicker" style="color:var(--sand);margin-bottom:1rem;">-- Good to Know</span>
   <h1>Frequently Asked Questions</h1>
   <p>Everything you need to know before you order.</p>
 </div>
 
 <section class="yb-section yb-section--cream">
   <div class="yb-faq reveal">
-
     {% for faq in faqs %}
     <div class="yb-faq-item">
       <div class="yb-faq-item__q">{{ faq.1 }}</div>
       <div class="yb-faq-item__a">{{ faq.2|safe }}</div>
     </div>
     {% endfor %}
-
   </div>
 
-  <div style="text-align:center; padding: 3rem 2rem 0;" class="reveal">
-    <p style="color:var(--text-soft); margin-bottom:1.5rem;">Still have questions? We're happy to help!</p>
-    <a href="{% url 'contact' %}" class="yb-btn yb-btn--gold">Contact Us</a>
+  <div style="text-align:center;padding:3rem 2rem 0;" class="reveal">
+    <p style="color:var(--soft);margin-bottom:1.5rem;font-size:0.95rem;">Still have questions? We are happy to help.</p>
+    <a href="{% url 'contact' %}" class="yb-btn yb-btn--fill">Contact Us</a>
   </div>
 </section>
 
