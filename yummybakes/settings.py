@@ -114,8 +114,8 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'xolagaju8@gmail.com')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'eerbkpzsvkcseexq')
 DEFAULT_FROM_EMAIL = 'Yummy Bakes <xolagaju8@gmail.com>'
 
-# Production security (only when DEBUG=False)
-if not DEBUG:
+# Production security (only when DEBUG=False AND on HTTPS)
+if not DEBUG and os.environ.get('SECURE_COOKIES', 'True') == 'True':
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
