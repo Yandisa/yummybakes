@@ -1,70 +1,175 @@
 {% extends 'main/base.html' %}
 {% load static %}
+{% block title %}Reviews – Yummy Bakes{% endblock %}
 
 {% block content %}
-<section class="container py-5">
 
-  <div class="text-center mb-5">
-    <h2 class="fw-bold">We’d Love Your Feedback!</h2>
-    <p class="text-muted">If you’ve enjoyed your order, please leave us a quick note below.</p>
-  </div>
+<div class="yb-page-hero">
+  <span class="yb-kicker yb-kicker--gold" style="margin-bottom:1rem;">-- Happy Customers</span>
+  <h1>What People Are Saying</h1>
+  <p>Real feedback from real clients across the Eastern Cape and beyond.</p>
+</div>
 
-  <!-- Testimonial Form First -->
-  <div class="row justify-content-center mb-5">
-    <div class="col-md-8">
-      <h4 class="mb-3">Leave a Testimonial</h4>
+<!-- TESTIMONIALS LIST -->
+<section class="yb-section yb-section--cream">
+  <div class="yb-section__inner">
 
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-
-      <form method="POST" class="border p-4 bg-light rounded shadow-sm" aria-label="Submit your testimonial">
-        {% csrf_token %}
-        <div class="mb-3">
-          <label for="id_name" class="form-label">Your Name</label>
-          {{ form.name }}
+    {% if testimonials %}
+    <div class="yb-testi-list">
+      {% for t in testimonials %}
+      <article class="yb-review reveal">
+        <div class="yb-review__stars">
+          <div class="yb-review__star"></div>
+          <div class="yb-review__star"></div>
+          <div class="yb-review__star"></div>
+          <div class="yb-review__star"></div>
+          <div class="yb-review__star"></div>
         </div>
-        <div class="mb-3">
-          <label for="id_location" class="form-label">Location (optional)</label>
-          {{ form.location }}
-        </div>
-        <div class="mb-3">
-          <label for="id_message" class="form-label">Message</label>
-          {{ form.message }}
-        </div>
-        {{ form.honeypot }} {# Hidden field for spam prevention #}
-
-        <div class="text-end mt-4">
-          <button type="submit" class="btn btn-warning px-4">Submit</button>
-        </div>
-      </form>
+        <p class="yb-review__quote">{{ t.message }}</p>
+        <div class="yb-review__rule"></div>
+        <span class="yb-review__author">
+          {{ t.name }}{% if t.location %} &mdash; {{ t.location }}{% endif %}
+        </span>
+      </article>
+      {% endfor %}
     </div>
-  </div>
+    {% else %}
+    <div style="text-align:center;padding:4rem 2rem;color:var(--soft);">
+      <p style="font-family:'Lora',serif;font-style:italic;font-size:1.1rem;">No reviews yet &mdash; be the first to leave one!</p>
+    </div>
+    {% endif %}
 
-  <!-- Testimonials List -->
-  <div class="text-center mb-4">
-    <h2 class="fw-bold">What Our Customers Say</h2>
-    <p class="text-muted">Real feedback from our happy clients.</p>
   </div>
-
-  <div class="row justify-content-center">
-    {% for t in testimonials %}
-      <div class="col-md-8 mb-4">
-        <div class="p-4 bg-light border rounded shadow-sm">
-          <blockquote class="blockquote mb-0">
-            <p class="mb-2">“{{ t.message }}”</p>
-            <footer class="blockquote-footer">{{ t.name }}{% if t.location %}, {{ t.location }}{% endif %}</footer>
-          </blockquote>
-        </div>
-      </div>
-    {% empty %}
-      <p class="text-center">No testimonials yet. Be the first to leave one!</p>
-    {% endfor %}
-  </div>
-
 </section>
+
+<!-- LEAVE A REVIEW -->
+<section class="yb-section yb-section--blush">
+  <div class="yb-section__inner" style="max-width:680px;">
+
+    <div style="text-align:center;margin-bottom:2.5rem;" class="reveal">
+      <span class="yb-kicker yb-kicker--center">Share Your Experience</span>
+      <h2 class="yb-section-title">We'd Love Your Feedback</h2>
+      <p class="yb-section-sub" style="margin:0.75rem auto 0;text-align:center;">If you've enjoyed your order, please leave us a quick note below.</p>
+    </div>
+
+    <form method="POST" class="reveal" style="background:var(--white);padding:2.5rem;border-radius:var(--radius);border:1px solid var(--rule);">
+      {% csrf_token %}
+
+      <div class="yb-form-group">
+        <label for="id_name">Your Name *</label>
+        {{ form.name }}
+        {% if form.name.errors %}<ul>{% for e in form.name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+      </div>
+
+      <div class="yb-form-group">
+        <label for="id_location">Location <span style="font-weight:400;color:var(--soft);">(optional)</span></label>
+        {{ form.location }}
+      </div>
+
+      <div class="yb-form-group">
+        <label for="id_message">Your Message *</label>
+        {{ form.message }}
+        {% if form.message.errors %}<ul>{% for e in form.message.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+      </div>
+
+      {{ form.honeypot }}
+
+      <button type="submit" class="yb-btn yb-btn--fill" style="width:100%;justify-content:center;">
+        Submit Review
+      </button>
+    </form>
+
+  </div>
+</section>
+
+<style>
+/* Reviews-specific styles — magazine spread layout */
+.yb-testi-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+.yb-review {
+  background: var(--white);
+  padding: 2rem 2rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--rose);
+  transition: var(--ease);
+}
+.yb-review:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(90,58,46,0.08);
+  border-left-color: var(--ink-mid);
+}
+.yb-review__stars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1rem;
+}
+.yb-review__star {
+  width: 11px; height: 11px;
+  background: var(--gold);
+  clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+}
+.yb-review__quote {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink);
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+.yb-review__rule {
+  width: 28px; height: 1px;
+  background: var(--rose);
+  margin-bottom: 0.85rem;
+}
+.yb-review__author {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+}
+
+/* Force django form fields to match site styling */
+.yb-form-group input[type="text"],
+.yb-form-group input[type="email"],
+.yb-form-group textarea,
+form[method="POST"] input[type="text"],
+form[method="POST"] input[type="email"],
+form[method="POST"] textarea {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1.5px solid rgba(90,58,46,0.15);
+  border-radius: var(--radius);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: var(--white);
+  transition: var(--ease);
+  outline: none;
+}
+form[method="POST"] input:focus,
+form[method="POST"] textarea:focus {
+  border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(216,155,155,0.15);
+}
+form[method="POST"] textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+form[method="POST"] ul {
+  list-style: none;
+  color: #c0392b;
+  font-size: 0.825rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .yb-testi-list { grid-template-columns: 1fr; }
+}
+</style>
+
 {% endblock %}
-
-
