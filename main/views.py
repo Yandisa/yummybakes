@@ -33,23 +33,21 @@ def about(request):
 
 
 def menu(request):
-    """Show all categories that have at least one MenuItem"""
-    # Get all unique categories that have menu items, with a sample image from each
-    items = MenuItem.objects.all().order_by('category', '-added_at')
- 
-    # Build category cards dynamically — one card per category that has items
+    """Show all categories that have at least one GalleryImage — one face card per category"""
+    images = GalleryImage.objects.all().order_by('category', '-uploaded_at')
+
     seen = set()
     category_cards = []
-    for item in items:
-        if item.category not in seen:
-            seen.add(item.category)
+    for img in images:
+        if img.category not in seen:
+            seen.add(img.category)
             category_cards.append({
-                'key': item.category,
-                'label': item.get_category_display(),
-                'image_url': item.image.url,
-                'item_count': MenuItem.objects.filter(category=item.category).count(),
+                'key': img.category,
+                'label': img.get_category_display(),
+                'image_url': img.image.url,
+                'item_count': GalleryImage.objects.filter(category=img.category).count(),
             })
- 
+
     return render(request, 'main/menu.html', {
         'category_cards': category_cards,
     })
@@ -64,11 +62,9 @@ def menu_category(request, category):
         raise Http404("Category not found.")
  
     items = MenuItem.objects.filter(category=category).order_by('-added_at')
-    gallery_images = GalleryImage.objects.filter(category=category).order_by('-uploaded_at')
-
+ 
     return render(request, 'main/menu_category.html', {
         'items': items,
-        'gallery_images': gallery_images,
         'category_key': category,
         'category_label': valid_categories[category],
     })
