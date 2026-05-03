@@ -33,62 +33,43 @@ def about(request):
 
 
 def menu(request):
-    categories = {
-        'wedding': 'Wedding Cakes',
-        'birthday': 'Birthday Cakes',
-        'kids': 'Kids Cakes',
-        'custom': 'Custom Designs',
-        'muffins': 'Muffins',
-        'cupcakes': 'Cupcakes',
-        'scones': 'Scones',
-        'party_packs': 'Party Packs',
-        'balloons': 'Balloon Garlands',
-        'specials': 'Specials',
-    }
-
-    category_images = {
-        'wedding': '/media/menu/wedding.jpg',
-        'birthday': '/media/menu/birthday.jpg',
-        'kids': '/media/menu/kids.jpg',
-        'custom': '/media/menu/custom.jpg',
-        'muffins': '/media/menu/muffins.jpg',
-        'cupcakes': '/media/menu/cupcakes.jpg',
-        'scones': '/media/menu/scones.jpg',
-        'party_packs': '/media/menu/party_packs.jpg',
-        'balloons': '/media/menu/balloons.jpg',
-        'specials': '/media/menu/specials.jpg',
-    }
-
+    """Show all categories that have at least one MenuItem"""
+    # Get all unique categories that have menu items, with a sample image from each
+    items = MenuItem.objects.all().order_by('category', '-added_at')
+ 
+    # Build category cards dynamically — one card per category that has items
+    seen = set()
+    category_cards = []
+    for item in items:
+        if item.category not in seen:
+            seen.add(item.category)
+            category_cards.append({
+                'key': item.category,
+                'label': item.get_category_display(),
+                'image_url': item.image.url,
+                'item_count': MenuItem.objects.filter(category=item.category).count(),
+            })
+ 
     return render(request, 'main/menu.html', {
-        'categories': categories,
-        'category_images': category_images,
+        'category_cards': category_cards,
     })
-
+ 
+ 
 def menu_category(request, category):
-    categories = {
-        'wedding': 'Wedding Cakes',
-        'birthday': 'Birthday Cakes',
-        'kids': 'Kids Cakes',
-        'custom': 'Custom Designs',
-        'muffins': 'Muffins',
-        'cupcakes': 'Cupcakes',
-        'scones': 'Scones',
-        'party_packs': 'Party Packs',
-        'balloons': 'Balloon Garlands',
-        'specials': 'Specials',
-    }
-
-    if category not in categories:
+    """Show all menu items in a specific category"""
+    # Validate the category against MenuItem's choices
+    valid_categories = dict(MenuItem.CATEGORY_CHOICES)
+    if category not in valid_categories:
+        from django.http import Http404
         raise Http404("Category not found.")
-
-    images = GalleryImage.objects.filter(category=category).order_by('-uploaded_at')
-
+ 
+    items = MenuItem.objects.filter(category=category).order_by('-added_at')
+ 
     return render(request, 'main/menu_category.html', {
-        'images': images,
+        'items': items,
         'category_key': category,
-        'category_label': categories[category],
+        'category_label': valid_categories[category],
     })
-
 
 def gallery(request):
     images = GalleryImage.objects.all().order_by('-uploaded_at')
