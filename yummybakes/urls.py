@@ -60,6 +60,6 @@ if settings.DEBUG:
     except ImportError:
         pass
 
-# Always serve media (Django dev server) and static (fallback when DEBUG=False without WhiteNoise serving)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Always serve media via protected view (works in both DEBUG=True and False)
+urlpatterns += [path('media/<path:path>', views.serve_protected_media, name='serve_media')]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
