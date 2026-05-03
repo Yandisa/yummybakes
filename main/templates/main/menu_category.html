@@ -57,6 +57,27 @@
   </div>
 </section>
 
+<!-- GALLERY SECTION -->
+{% if gallery_images %}
+<section class="yb-section yb-section--cream" style="padding-top:0; padding-bottom:3rem;">
+  <div class="yb-section__inner">
+    <div style="margin-bottom:2rem;">
+      <span class="yb-kicker yb-kicker--gold">-- Inspiration</span>
+      <h2 style="font-family:'Lora',serif;font-size:1.6rem;margin-top:0.5rem;">Our {{ category_label }} Gallery</h2>
+      <p style="color:var(--soft);font-size:0.9rem;">Tap any image to view full size.</p>
+    </div>
+    <div class="yb-gallery-grid">
+      {% for img in gallery_images %}
+      <div class="yb-gallery-item reveal" onclick="openLightbox('{{ img.image.url|escapejs }}','{{ img.title|escapejs }}')">
+        <img src="{{ img.image.url }}" alt="{{ img.title }}" loading="lazy" decoding="async">
+        <div class="yb-gallery-item__overlay"><i class="fas fa-expand-alt"></i></div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
 <!-- CTA -->
 {% if items %}
 <section class="yb-cta">
