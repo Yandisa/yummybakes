@@ -1,27 +1,38 @@
 {% extends 'main/base.html' %}
+{% block title %}Order Received – Yummy Bakes{% endblock %}
 
 {% block content %}
-<section class="container py-5 text-center">
-  <h2 class="fw-bold">Thank You, {{ order.name }}!</h2>
-  <p class="lead">Your order has been received. You can now confirm it on WhatsApp:</p>
 
-  <a href="{{ whatsapp_url }}" target="_blank" rel="noopener" class="btn btn-success btn-lg mt-4" aria-label="Send your order via WhatsApp">
-    <i class="fa fa-whatsapp me-2" aria-hidden="true"></i> Send via WhatsApp
-  </a>
+<section class="yb-section yb-section--cream" style="min-height:70vh;display:flex;align-items:center;justify-content:center;padding-top:8rem;">
+  <div style="max-width:560px;text-align:center;" class="reveal">
 
-  <!-- Deposit & pricing message -->
-  <div class="alert alert-info mt-5 mx-auto" style="max-width: 600px;">
-    We'll be in touch soon to confirm availability, pricing, and payment instructions. A 50% deposit is required to secure your order.
-  </div>
+    <div style="width:64px;height:64px;border-radius:50%;background:var(--blush);border:2px solid var(--rose);display:flex;align-items:center;justify-content:center;margin:0 auto 2rem;">
+      <i class="fas fa-check" style="color:var(--rose);font-size:1.5rem;"></i>
+    </div>
 
-  <!-- Testimonial request -->
-  <div class="mt-5 pt-4 border-top">
-    <p class="mb-1 fw-semibold">We’d love to hear from you!</p>
-    <p class="text-muted mb-3">If you enjoyed your experience, please leave us a review or testimonial.</p>
-    <a href="{% url 'testimonials' %}" class="btn btn-outline-primary">
-      Leave a Review
-    </a>
+    <span class="yb-kicker yb-kicker--center" style="margin-bottom:0.75rem;">Order Received</span>
+    <h1 class="yb-section-title" style="font-size:clamp(2rem,4vw,2.8rem);margin-bottom:1rem;">
+      Thank You for Your Order!
+    </h1>
+    <p style="font-size:1rem;color:var(--soft);line-height:1.75;margin-bottom:2rem;">
+      We've received your order details and will be in touch shortly to confirm availability, pricing, and the next steps.
+    </p>
+
+    <div style="background:var(--blush-pale);border-left:3px solid var(--rose);border-radius:0 var(--radius) var(--radius) 0;padding:1.25rem 1.5rem;margin-bottom:2.5rem;text-align:left;">
+      <strong style="color:var(--ink);font-size:0.85rem;display:block;margin-bottom:6px;">What happens next?</strong>
+      <p style="font-size:0.9rem;color:var(--soft);margin:0;line-height:1.7;">
+        We'll reach out within 24 hours to confirm everything. A 50% deposit will be required to secure your booking.
+      </p>
+    </div>
+
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="https://wa.me/27849523821" target="_blank" class="yb-btn yb-btn--fill">
+        <i class="fab fa-whatsapp"></i> Message Us on WhatsApp
+      </a>
+      <a href="{% url 'home' %}" class="yb-btn yb-btn--ghost">Back to Home</a>
+    </div>
+
   </div>
 </section>
-{% endblock %}
 
+{% endblock %}
