@@ -1,8 +1,29 @@
 {% extends 'main/base.html' %}
+{% block title %}Thank You – Yummy Bakes{% endblock %}
+
 {% block content %}
-<section class="container py-5 text-center">
-  <h2 class="fw-bold">Thank You!</h2>
-  <p>Your testimonial has been submitted and is awaiting approval.</p>
-  <a href="{% url 'home' %}" class="btn btn-outline-dark mt-3">Back to Home</a>
+
+<section class="yb-section yb-section--cream" style="min-height:60vh;display:flex;align-items:center;justify-content:center;padding-top:8rem;">
+  <div style="max-width:520px;text-align:center;" class="reveal">
+
+    <div style="width:64px;height:64px;border-radius:50%;background:var(--blush);border:2px solid var(--rose);display:flex;align-items:center;justify-content:center;margin:0 auto 2rem;">
+      <i class="fas fa-heart" style="color:var(--rose);font-size:1.5rem;"></i>
+    </div>
+
+    <span class="yb-kicker yb-kicker--center" style="margin-bottom:0.75rem;">Thank You</span>
+    <h1 class="yb-section-title" style="font-size:clamp(2rem,4vw,2.8rem);margin-bottom:1rem;">
+      Your Review is in Good Hands
+    </h1>
+    <p style="font-size:1rem;color:var(--soft);line-height:1.75;margin-bottom:2.5rem;">
+      Your testimonial has been submitted and is awaiting approval. We truly appreciate you taking the time to share your experience.
+    </p>
+
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="{% url 'home' %}" class="yb-btn yb-btn--fill">Back to Home</a>
+      <a href="{% url 'menu' %}" class="yb-btn yb-btn--ghost">View Menu</a>
+    </div>
+
+  </div>
 </section>
+
 {% endblock %}
