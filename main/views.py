@@ -45,11 +45,16 @@ def menu(request):
     for img in images:
         if img.category not in seen:
             seen.add(img.category)
+            # Get lowest price from MenuItem for this category
+            from django.db.models import Min
+            price_data = MenuItem.objects.filter(category=img.category).aggregate(min_price=Min('price'))
+            min_price = price_data['min_price']
             category_cards.append({
                 'key': img.category,
                 'label': img.get_category_display(),
                 'image_url': img.image.url,
                 'item_count': GalleryImage.objects.filter(category=img.category).count(),
+                'from_price': min_price,
             })
 
     return render(request, 'main/menu.html', {
