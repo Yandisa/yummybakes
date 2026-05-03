@@ -1,7 +1,6 @@
 """
 Django settings for yummybakes project.
 """
-
 from pathlib import Path
 import os
 
@@ -60,13 +59,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'yummybakes.wsgi.application'
 
-# Database
+# ============================================================
+# PERSISTENT STORAGE — survives redeploys via Coolify volumes
+# ============================================================
+
+# Database — uses DB_PATH env var if set (production), falls back to local
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.environ.get('DB_PATH', BASE_DIR / 'db.sqlite3'),
     }
 }
+
+# Media files — uses MEDIA_ROOT env var if set (production), falls back to local
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
+
+# ============================================================
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -86,10 +95,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
