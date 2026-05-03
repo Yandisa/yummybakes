@@ -47,8 +47,8 @@
 <!-- TICKER -->
 <div class="yb-ticker" aria-hidden="true">
   <div class="yb-ticker__inner">
-    {% with items="Custom Cakes,Birthday Cakes,Wedding Cakes,Cupcakes,Balloon Garlands,Party Packs,Muffins,Scones,Kids Cakes,Local Delivery,Custom Cakes,Birthday Cakes,Wedding Cakes,Cupcakes,Balloon Garlands,Party Packs,Muffins,Scones,Kids Cakes,Local Delivery" %}
-    {% for item in items.split %}
+{% with items="Custom Cakes|Birthday Cakes|Wedding Cakes|Cupcakes|Balloon Garlands|Party Packs|Muffins|Scones|Kids Cakes|Local Delivery|Custom Cakes|Birthday Cakes|Wedding Cakes|Cupcakes|Balloon Garlands|Party Packs|Muffins|Scones|Kids Cakes|Local Delivery" %}
+{% for item in items.split("|") %}
       <span class="yb-ticker__item">{{ item }}<span class="yb-ticker__dot"></span></span>
     {% endfor %}
     {% endwith %}
