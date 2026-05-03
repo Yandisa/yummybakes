@@ -1,128 +1,328 @@
 {% extends 'main/base.html' %}
 {% load static %}
+{% block title %}{{ category_label }} – Yummy Bakes{% endblock %}
 
 {% block extra_css %}
 {% if category_key == "specials" %}
 <style>
-.balloon-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  width: 100%;
-  height: 100%;
-  z-index: 998;
-  overflow: hidden;
-}
-.balloon {
-  position: absolute;
-  width: 60px;
-  opacity: 0.9;
-  animation: floatDown 12s linear infinite;
-}
-.balloon1 { left: 5%; animation-delay: 0s; }
-.balloon2 { left: 18%; animation-delay: 1.5s; }
-.balloon3 { left: 33%; animation-delay: 3s; }
-.balloon4 { left: 48%; animation-delay: 4.5s; }
-.balloon5 { left: 62%; animation-delay: 6s; }
-.balloon6 { left: 78%; animation-delay: 7.5s; }
-.balloon7 { left: 90%; animation-delay: 9s; }
-
-@keyframes floatDown {
-  0% { transform: translateY(-120px) rotate(0deg); opacity: 0; }
-  10% { opacity: 1; }
-  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-}
+  .yb-balloons {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 998;
+    overflow: hidden;
+  }
+  .yb-balloon {
+    position: absolute;
+    width: 56px;
+    opacity: 0.85;
+    animation: floatDown 14s linear infinite;
+  }
+  .yb-balloon:nth-child(1) { left: 5%;  animation-delay: 0s; }
+  .yb-balloon:nth-child(2) { left: 18%; animation-delay: 1.8s; }
+  .yb-balloon:nth-child(3) { left: 33%; animation-delay: 3.6s; }
+  .yb-balloon:nth-child(4) { left: 48%; animation-delay: 5.4s; }
+  .yb-balloon:nth-child(5) { left: 62%; animation-delay: 7.2s; }
+  .yb-balloon:nth-child(6) { left: 78%; animation-delay: 9s; }
+  .yb-balloon:nth-child(7) { left: 90%; animation-delay: 10.8s; }
+  @keyframes floatDown {
+    0%   { transform: translateY(-120px) rotate(0deg);   opacity: 0; }
+    10%  { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg);  opacity: 0; }
+  }
 </style>
 {% endif %}
 {% endblock %}
 
 {% block content %}
-<section class="container py-5">
 
-  {% if category_key == "specials" %}
-  <!-- 🎈 Falling Balloons -->
-  <div class="balloon-container">
-    <img src="{% static 'images/balloons/balloon1.png' %}" class="balloon balloon1">
-    <img src="{% static 'images/balloons/balloon2.png' %}" class="balloon balloon2">
-    <img src="{% static 'images/balloons/balloon3.png' %}" class="balloon balloon3">
-    <img src="{% static 'images/balloons/balloon4.png' %}" class="balloon balloon4">
-    <img src="{% static 'images/balloons/balloon5.png' %}" class="balloon balloon5">
-    <img src="{% static 'images/balloons/balloon6.png' %}" class="balloon balloon6">
-    <img src="{% static 'images/balloons/balloon7.png' %}" class="balloon balloon7">
-  </div>
-  {% endif %}
-
-  <div class="text-center mb-4">
-    <h2 class="fw-bold display-5 mb-3">{{ category_label }}</h2>
-    <p class="text-muted lead">Browse designs in this category.</p>
-
-    {% if category_key == "specials" %}
-<div class="alert alert-warning text-center fw-semibold my-4 shadow-sm">
-  <strong> July Special:</strong> Yummy Bakes is turning 4! We're offering custom kids cakes (ages 0–12) for only <strong>R450</strong>.<br>
-  Choose your child's favorite character or superhero! <br>
-  <em>Valid for birthdays in July only. Orders require 3–5 days’ notice.</em><br>
-</div>
-
-<div class="text-center my-3">
-  <a href="{% url 'order' %}?item=Kids+Birthday+Cake+Special" class="btn btn-warning btn-lg fw-semibold px-4 py-2">
-    Order Now
-  </a>
+{% if category_key == "specials" %}
+<div class="yb-balloons" aria-hidden="true">
+  <img src="{% static 'images/balloons/balloon1.png' %}" class="yb-balloon" alt="">
+  <img src="{% static 'images/balloons/balloon2.png' %}" class="yb-balloon" alt="">
+  <img src="{% static 'images/balloons/balloon3.png' %}" class="yb-balloon" alt="">
+  <img src="{% static 'images/balloons/balloon4.png' %}" class="yb-balloon" alt="">
+  <img src="{% static 'images/balloons/balloon5.png' %}" class="yb-balloon" alt="">
+  <img src="{% static 'images/balloons/balloon6.png' %}" class="yb-balloon" alt="">
+  <img src="{% static 'images/balloons/balloon7.png' %}" class="yb-balloon" alt="">
 </div>
 {% endif %}
 
-    <a href="{% url 'menu' %}" class="btn btn-outline-secondary btn-sm">← Back to Menu</a>
-  </div>
+<!-- PAGE HERO -->
+<div class="yb-page-hero">
+  <span class="yb-kicker yb-kicker--gold" style="margin-bottom:1rem;">-- The Collection</span>
+  <h1>{{ category_label }}</h1>
+  <p>Browse our handcrafted {{ category_label|lower }}. Tap any image to view full size.</p>
 
-  {% if images %}
-  <div class="row g-4">
-    {% for image in images %}
-    <div class="col-6 col-md-4 col-lg-3">
-      <div class="card border-0 shadow-sm h-100 overflow-hidden hover-scale">
-        <div class="gallery-img-wrapper position-relative">
-          <img src="{{ image.image.url }}" class="gallery-img img-fluid"
-               alt="{{ image.title }}"
-               loading="lazy"
-               style="cursor: pointer;"
-               data-bs-toggle="modal"
-               data-bs-target="#imageModal"
-               onclick="showImage(this)">
-        </div>
-        <div class="card-body text-center">
-          <h6 class="fw-semibold mb-2">{{ image.title }}</h6>
-          <a href="{% url 'order' %}?item={{ image.title|urlencode }}" class="btn btn-warning btn-sm">
-            Order Now
-          </a>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-  {% else %}
-  <p class="text-center text-muted">No images available in this category yet.</p>
-  {% endif %}
-</section>
-
-<!-- Image Modal -->
-<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl">
-    <div class="modal-content border-0 bg-transparent">
-      <div class="modal-body p-0 position-relative">
-        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
-        <img id="modalImage" src="" alt="Full size" class="img-fluid w-100 rounded shadow">
-      </div>
-    </div>
+  <div style="margin-top:1.75rem;">
+    <a href="{% url 'menu' %}" class="yb-btn yb-btn--outline-light">
+      <i class="fas fa-arrow-left" style="font-size:0.7rem;"></i> Back to Menu
+    </a>
   </div>
 </div>
+
+{% if category_key == "specials" %}
+<!-- SPECIAL OFFER BANNER -->
+<section class="yb-special-banner">
+  <div class="yb-special-banner__inner">
+    <span class="yb-special-banner__badge">Limited Offer</span>
+    <h2 class="yb-special-banner__title">Yummy Bakes is turning 4!</h2>
+    <p class="yb-special-banner__sub">
+      Custom kids cakes (ages 0&ndash;12) for only <strong>R450</strong>.<br>
+      Choose your child&rsquo;s favorite character or superhero.
+    </p>
+    <p class="yb-special-banner__fineprint">
+      <em>Valid for July birthdays only. Orders require 3&ndash;5 days&rsquo; notice.</em>
+    </p>
+    <a href="{% url 'order' %}?item=Kids+Birthday+Cake+Special" class="yb-btn yb-btn--ink" style="margin-top:1.5rem;">
+      Claim This Special
+    </a>
+  </div>
+</section>
+{% endif %}
+
+<!-- IMAGE GRID -->
+<section class="yb-section yb-section--cream" style="padding-top:3rem;">
+  <div class="yb-section__inner">
+
+    {% if images %}
+    <div class="yb-cat-grid">
+      {% for image in images %}
+      <article class="yb-cat-card reveal">
+        <div class="yb-cat-card__img" onclick="openLightbox('{{ image.image.url|escapejs }}','{{ image.title|escapejs }}')">
+          <img src="{{ image.image.url }}" alt="{{ image.title }}" loading="lazy" decoding="async" width="500" height="500">
+          <div class="yb-cat-card__overlay"><i class="fas fa-expand-alt"></i></div>
+        </div>
+        <div class="yb-cat-card__body">
+          <span class="yb-cat-card__num">0{{ forloop.counter }}</span>
+          <h3 class="yb-cat-card__title">{{ image.title }}</h3>
+          <a href="{% url 'order' %}?item={{ image.title|urlencode }}" class="yb-cat-card__cta">
+            Order This Design <i class="fas fa-arrow-right" style="font-size:0.65rem;"></i>
+          </a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align:center;padding:5rem 2rem;color:var(--soft);">
+      <p style="font-family:'Lora',serif;font-style:italic;font-size:1.1rem;margin-bottom:1.5rem;">
+        No designs in this category yet &mdash; check back soon, or contact us for a custom request.
+      </p>
+      <a href="{% url 'order' %}" class="yb-btn yb-btn--fill">Place a Custom Order</a>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<!-- CTA -->
+{% if images %}
+<section class="yb-cta">
+  <div class="reveal">
+    <span class="yb-cta__kicker">Don&rsquo;t See What You Want?</span>
+    <h2 class="yb-cta__title">Let&rsquo;s Design Something Custom</h2>
+    <p class="yb-cta__sub">Send us your inspiration and we&rsquo;ll bring it to life.</p>
+    <a href="{% url 'order' %}" class="yb-btn yb-btn--white">Start a Custom Order</a>
+  </div>
+</section>
+{% endif %}
+
+<!-- LIGHTBOX -->
+<div class="yb-lightbox" id="lightbox">
+  <button class="yb-lightbox__close" id="lightboxClose" aria-label="Close"><i class="fas fa-times"></i></button>
+  <img class="yb-lightbox__img" id="lightboxImg" src="" alt="">
+  <p class="yb-lightbox__title" id="lightboxTitle"></p>
+</div>
+
+<style>
+/* Light outline button (for dark page hero) */
+.yb-btn--outline-light {
+  background: transparent;
+  color: rgba(255,250,245,0.85);
+  border: 1.5px solid rgba(255,255,255,0.2);
+}
+.yb-btn--outline-light:hover {
+  border-color: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.05);
+  color: var(--white);
+}
+
+/* Special offer banner */
+.yb-special-banner {
+  background: linear-gradient(135deg, var(--rose) 0%, var(--ink-mid) 100%);
+  padding: 4rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.yb-special-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 24px);
+}
+.yb-special-banner__inner {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.yb-special-banner__badge {
+  display: inline-block;
+  background: var(--white);
+  color: var(--ink-mid);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 100px;
+  margin-bottom: 1.25rem;
+}
+.yb-special-banner__title {
+  font-family: 'Lora', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 1rem;
+}
+.yb-special-banner__sub {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.92);
+  line-height: 1.75;
+  margin-bottom: 0.75rem;
+}
+.yb-special-banner__sub strong { color: var(--gold); font-size: 1.15rem; }
+.yb-special-banner__fineprint {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.65);
+  font-style: italic;
+}
+
+/* Category cards grid */
+.yb-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+.yb-cat-card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: var(--ease);
+}
+.yb-cat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(90,58,46,0.1);
+  border-color: var(--rose);
+}
+.yb-cat-card__img {
+  aspect-ratio: 1/1;
+  background: var(--blush);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.yb-cat-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.yb-cat-card:hover .yb-cat-card__img img {
+  transform: scale(1.05);
+}
+.yb-cat-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(90,58,46,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: var(--ease);
+}
+.yb-cat-card:hover .yb-cat-card__overlay {
+  opacity: 1;
+}
+.yb-cat-card__overlay i {
+  color: var(--white);
+  font-size: 1.25rem;
+}
+.yb-cat-card__body {
+  padding: 1.25rem 1.25rem 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+.yb-cat-card__num {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--soft);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+.yb-cat-card__title {
+  font-family: 'Lora', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.85rem;
+}
+.yb-cat-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rose);
+  transition: var(--ease);
+}
+.yb-cat-card__cta:hover {
+  color: var(--ink-mid);
+  gap: 12px;
+}
+
+@media (max-width: 1100px) {
+  .yb-cat-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .yb-cat-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .yb-special-banner { padding: 3rem 1.5rem; }
+}
+@media (max-width: 480px) {
+  .yb-cat-grid { grid-template-columns: 1fr; }
+}
+</style>
+
 {% endblock %}
 
 {% block extra_js %}
 <script>
-  function showImage(imgElement) {
-    const modalImage = document.getElementById("modalImage");
-    modalImage.src = '';
-    modalImage.src = imgElement.src;
-    modalImage.alt = imgElement.alt;
+  function openLightbox(src, title) {
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightboxTitle').textContent = title;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
   }
+  document.getElementById('lightboxClose').addEventListener('click', () => {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+    document.getElementById('lightboxImg').src = '';
+  });
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.classList.remove('open');
+      document.body.style.overflow = '';
+      document.getElementById('lightboxImg').src = '';
+    }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
 </script>
 {% endblock %}
