@@ -6,219 +6,51 @@
 <div class="yb-page-hero">
   <span class="yb-kicker yb-kicker--gold" style="margin-bottom:1rem;">-- What We Bake</span>
   <h1>Our Menu</h1>
-  <p>Explore our handcrafted offerings &mdash; from wedding cakes to balloon garlands.</p>
+  <p>Explore our handcrafted offerings &mdash; tap a category to see what's available.</p>
 </div>
 
-<!-- CATEGORIES -->
 <section class="yb-section yb-section--cream" style="padding-top:3rem;">
-  <div style="margin-bottom:2.5rem;text-align:center;" class="reveal">
-    <span class="yb-kicker yb-kicker--center">Browse by Category</span>
-    <h2 class="yb-section-title">Find Your Perfect Bake</h2>
-  </div>
 
+  {% if category_cards %}
   <div class="yb-menu-grid">
-
-    <a href="{% url 'menu_category' 'wedding' %}" class="yb-menu-card">
-      <img src="{% static 'images/menu/wedding.jpg' %}" alt="Wedding Cakes" loading="lazy" decoding="async">
-      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Wedding Cakes</span></div>
-    </a>
-
-    <a href="{% url 'menu_category' 'birthday' %}" class="yb-menu-card">
-      <img src="{% static 'images/menu/birthday.jpg' %}" alt="Birthday Cakes" loading="lazy" decoding="async">
-      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Birthday Cakes</span></div>
-    </a>
-
-    <a href="{% url 'menu_category' 'kids' %}" class="yb-menu-card">
-      <img src="{% static 'images/menu/kids.jpg' %}" alt="Kids Cakes" loading="lazy" decoding="async">
-      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Kids Cakes</span></div>
-    </a>
-
-    <a href="{% url 'menu_category' 'custom' %}" class="yb-menu-card">
-      <img src="{% static 'images/menu/custom.jpg' %}" alt="Custom Designs" loading="lazy" decoding="async">
-      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Custom Designs</span></div>
-    </a>
-
-    <a href="{% url 'menu_category' 'cupcakes' %}" class="yb-menu-card">
-      <img src="{% static 'images/menu/cupcakes.jpg' %}" alt="Cupcakes" loading="lazy" decoding="async">
-      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Cupcakes</span></div>
-    </a>
-
-    <a href="{% url 'menu_category' 'muffins' %}" class="yb-menu-card">
-      <img src="{% static 'images/menu/muffins.jpg' %}" alt="Muffins" loading="lazy" decoding="async">
-      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Muffins</span></div>
-    </a>
-
-    <a href="{% url 'menu_category' 'scones' %}" class="yb-menu-card">
-      <img src="{% static 'images/menu/scones.jpg' %}" alt="Scones" loading="lazy" decoding="async">
-      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Scones</span></div>
-    </a>
-
-    <a href="{% url 'menu_category' 'party_packs' %}" class="yb-menu-card">
-      <img src="{% static 'images/menu/party_packs.jpg' %}" alt="Party Packs" loading="lazy" decoding="async">
-      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Party Packs</span></div>
-    </a>
-
-    <a href="{% url 'menu_category' 'balloons' %}" class="yb-menu-card">
-      <img src="{% static 'images/menu/balloons.jpg' %}" alt="Balloon Garlands" loading="lazy" decoding="async">
-      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Balloon Garlands</span></div>
-    </a>
-
-    <a href="{% url 'menu_category' 'specials' %}" class="yb-menu-card">
-      <img src="{% static 'images/menu/specials.jpeg' %}" alt="Specials" loading="lazy" decoding="async">
-      <div class="yb-menu-card__overlay"><span class="yb-menu-card__label">Specials</span></div>
-    </a>
-
-  </div>
-</section>
-
-
-<!-- MENU ITEMS WITH PRICES -->
-{% if menu_items %}
-<section class="yb-section yb-section--blush" style="padding-top:5rem;">
-  <div class="yb-section__inner">
-
-    <div class="yb-sec-header-row reveal">
-      <div>
-        <span class="yb-kicker">Pricing &amp; Details</span>
-        <h2 class="yb-section-title">Our Menu Items</h2>
+    {% for cat in category_cards %}
+    <a href="{% url 'menu_category' cat.key %}" class="yb-menu-card">
+      <img src="{{ cat.image_url }}" alt="{{ cat.label }}" loading="lazy" decoding="async">
+      <div class="yb-menu-card__overlay">
+        <div>
+          <span class="yb-menu-card__count">{{ cat.item_count }} {% if cat.item_count == 1 %}design{% else %}designs{% endif %}</span>
+          <span class="yb-menu-card__label">{{ cat.label }}</span>
+        </div>
       </div>
-      <a href="{% url 'order' %}" class="yb-sec-link">Place an Order</a>
-    </div>
-
-    <div class="yb-menu-items">
-      {% for item in menu_items %}
-      <article class="yb-menu-item reveal">
-        <div class="yb-menu-item__img">
-          <img src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy" decoding="async">
-        </div>
-        <div class="yb-menu-item__body">
-          <span class="yb-menu-item__cat">{{ item.get_category_display }}</span>
-          <h3 class="yb-menu-item__name">{{ item.name }}</h3>
-          <p class="yb-menu-item__desc">{{ item.description }}</p>
-          <div class="yb-menu-item__footer">
-            <span class="yb-menu-item__price">From R{{ item.price }}</span>
-            <a href="{% url 'order' %}?item={{ item.name|urlencode }}" class="yb-menu-item__cta">
-              Order This <i class="fas fa-arrow-right" style="font-size:0.65rem;"></i>
-            </a>
-          </div>
-        </div>
-      </article>
-      {% endfor %}
-    </div>
-
+    </a>
+    {% endfor %}
   </div>
-</section>
-{% endif %}
 
-
-<!-- CTA -->
-<section class="yb-cta">
-  <div class="reveal">
-    <span class="yb-cta__kicker">Don't See What You Want?</span>
-    <h2 class="yb-cta__title">Place a Custom Order</h2>
-    <p class="yb-cta__sub">Tell us your vision and we'll bring it to life.</p>
-    <a href="{% url 'order' %}" class="yb-btn yb-btn--white">Start Your Order</a>
+  <div style="text-align:center;padding:4rem 2rem 0;" class="reveal">
+    <p style="color:var(--soft);margin-bottom:1.5rem;font-size:0.95rem;">Want something different? We do custom orders.</p>
+    <a href="{% url 'order' %}" class="yb-btn yb-btn--fill">Place a Custom Order</a>
   </div>
-</section>
 
+  {% else %}
+  <div style="text-align:center;padding:5rem 2rem;color:var(--soft);">
+    <p style="font-family:'Lora',serif;font-style:italic;font-size:1.1rem;margin-bottom:1.5rem;">
+      Our menu is being prepared &mdash; check back soon, or send us a custom request.
+    </p>
+    <a href="{% url 'order' %}" class="yb-btn yb-btn--fill">Place a Custom Order</a>
+  </div>
+  {% endif %}
+
+</section>
 
 <style>
-/* Menu items list */
-.yb-menu-items {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-}
-.yb-menu-item {
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  background: var(--white);
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: var(--ease);
-}
-.yb-menu-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(90,58,46,0.1);
-  border-color: var(--rose);
-}
-.yb-menu-item__img {
-  background: var(--blush);
-  overflow: hidden;
-}
-.yb-menu-item__img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-.yb-menu-item:hover .yb-menu-item__img img { transform: scale(1.05); }
-.yb-menu-item__body {
-  padding: 1.5rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-}
-.yb-menu-item__cat {
-  font-size: 0.6rem;
+.yb-menu-card__count {
+  display: block;
+  font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--rose);
-  margin-bottom: 0.4rem;
-}
-.yb-menu-item__name {
-  font-family: 'Lora', serif;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 0.5rem;
-}
-.yb-menu-item__desc {
-  font-size: 0.875rem;
-  color: var(--soft);
-  line-height: 1.6;
-  margin-bottom: 1rem;
-  flex-grow: 1;
-}
-.yb-menu-item__footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--rule);
-}
-.yb-menu-item__price {
-  font-family: 'Lora', serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--ink-mid);
-}
-.yb-menu-item__cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--rose);
-  transition: var(--ease);
-}
-.yb-menu-item__cta:hover {
-  color: var(--ink-mid);
-  gap: 12px;
-}
-
-@media (max-width: 900px) {
-  .yb-menu-items { grid-template-columns: 1fr; }
-}
-@media (max-width: 600px) {
-  .yb-menu-item { grid-template-columns: 110px 1fr; }
-  .yb-menu-item__body { padding: 1.1rem; }
-  .yb-menu-item__name { font-size: 1rem; }
-  .yb-menu-item__desc { font-size: 0.825rem; -webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
-  .yb-menu-item__footer { flex-direction: column; gap: 8px; align-items: flex-start; }
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 4px;
 }
 </style>
 
