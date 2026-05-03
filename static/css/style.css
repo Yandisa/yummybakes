@@ -406,6 +406,7 @@ section { scroll-margin-top: var(--nav-h); }
 
   .yb-cards { grid-template-columns:repeat(2,1fr); }
   .yb-menu-grid { grid-template-columns:repeat(2,1fr); }
+  .yb-gallery-grid { grid-template-columns:repeat(2,1fr); }
   .yb-stats { grid-template-columns:repeat(2,1fr); }
   .yb-testi-grid { grid-template-columns:1fr; }
   .yb-footer__inner { grid-template-columns:1fr; padding:3rem 1.5rem; }
