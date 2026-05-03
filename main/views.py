@@ -64,9 +64,11 @@ def menu_category(request, category):
         raise Http404("Category not found.")
  
     items = MenuItem.objects.filter(category=category).order_by('-added_at')
- 
+    gallery_images = GalleryImage.objects.filter(category=category).order_by('-uploaded_at')
+
     return render(request, 'main/menu_category.html', {
         'items': items,
+        'gallery_images': gallery_images,
         'category_key': category,
         'category_label': valid_categories[category],
     })
@@ -201,15 +203,7 @@ def serve_protected_media(request, path):
     if not os.path.exists(full_path):
         logger.info(f"[404] Media not found: {safe_path}")
         raise Http404("File not found.")
-    # Detect mime type
-    import mimetypes
-    mime_type, _ = mimetypes.guess_type(full_path)
-    mime_type = mime_type or 'application/octet-stream'
-    response = FileResponse(open(full_path, 'rb'), content_type=mime_type)
-    # Cache media files for 30 days in browser
-    max_age = getattr(settings, 'MEDIA_CACHE_MAX_AGE', 60 * 60 * 24 * 30)
-    response['Cache-Control'] = f'public, max-age={max_age}'
-    return response
+    return FileResponse(open(full_path, 'rb'), content_type='application/octet-stream')
 
 
 def contact(request):
