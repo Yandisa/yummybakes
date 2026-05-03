@@ -2,57 +2,13 @@
 {% load static %}
 {% block title %}{{ category_label }} – Yummy Bakes{% endblock %}
 
-{% block extra_css %}
-{% if category_key == "specials" %}
-<style>
-  .yb-balloons {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 998;
-    overflow: hidden;
-  }
-  .yb-balloon {
-    position: absolute;
-    width: 56px;
-    opacity: 0.85;
-    animation: floatDown 14s linear infinite;
-  }
-  .yb-balloon:nth-child(1) { left: 5%;  animation-delay: 0s; }
-  .yb-balloon:nth-child(2) { left: 18%; animation-delay: 1.8s; }
-  .yb-balloon:nth-child(3) { left: 33%; animation-delay: 3.6s; }
-  .yb-balloon:nth-child(4) { left: 48%; animation-delay: 5.4s; }
-  .yb-balloon:nth-child(5) { left: 62%; animation-delay: 7.2s; }
-  .yb-balloon:nth-child(6) { left: 78%; animation-delay: 9s; }
-  .yb-balloon:nth-child(7) { left: 90%; animation-delay: 10.8s; }
-  @keyframes floatDown {
-    0%   { transform: translateY(-120px) rotate(0deg);   opacity: 0; }
-    10%  { opacity: 1; }
-    100% { transform: translateY(110vh) rotate(360deg);  opacity: 0; }
-  }
-</style>
-{% endif %}
-{% endblock %}
-
 {% block content %}
-
-{% if category_key == "specials" %}
-<div class="yb-balloons" aria-hidden="true">
-  <img src="{% static 'images/balloons/balloon1.png' %}" class="yb-balloon" alt="">
-  <img src="{% static 'images/balloons/balloon2.png' %}" class="yb-balloon" alt="">
-  <img src="{% static 'images/balloons/balloon3.png' %}" class="yb-balloon" alt="">
-  <img src="{% static 'images/balloons/balloon4.png' %}" class="yb-balloon" alt="">
-  <img src="{% static 'images/balloons/balloon5.png' %}" class="yb-balloon" alt="">
-  <img src="{% static 'images/balloons/balloon6.png' %}" class="yb-balloon" alt="">
-  <img src="{% static 'images/balloons/balloon7.png' %}" class="yb-balloon" alt="">
-</div>
-{% endif %}
 
 <!-- PAGE HERO -->
 <div class="yb-page-hero">
   <span class="yb-kicker yb-kicker--gold" style="margin-bottom:1rem;">-- The Collection</span>
   <h1>{{ category_label }}</h1>
-  <p>Browse our handcrafted {{ category_label|lower }}. Tap any image to view full size.</p>
+  <p>{% if items %}{{ items|length }} {% if items|length == 1 %}design{% else %}designs{% endif %} in this category. Tap any item to view full size.{% else %}No items in this category yet.{% endif %}</p>
 
   <div style="margin-top:1.75rem;">
     <a href="{% url 'menu' %}" class="yb-btn yb-btn--outline-light">
@@ -61,44 +17,30 @@
   </div>
 </div>
 
-{% if category_key == "specials" %}
-<!-- SPECIAL OFFER BANNER -->
-<section class="yb-special-banner">
-  <div class="yb-special-banner__inner">
-    <span class="yb-special-banner__badge">Limited Offer</span>
-    <h2 class="yb-special-banner__title">Yummy Bakes is turning 4!</h2>
-    <p class="yb-special-banner__sub">
-      Custom kids cakes (ages 0&ndash;12) for only <strong>R450</strong>.<br>
-      Choose your child&rsquo;s favorite character or superhero.
-    </p>
-    <p class="yb-special-banner__fineprint">
-      <em>Valid for July birthdays only. Orders require 3&ndash;5 days&rsquo; notice.</em>
-    </p>
-    <a href="{% url 'order' %}?item=Kids+Birthday+Cake+Special" class="yb-btn yb-btn--ink" style="margin-top:1.5rem;">
-      Claim This Special
-    </a>
-  </div>
-</section>
-{% endif %}
-
-<!-- IMAGE GRID -->
+<!-- ITEMS GRID -->
 <section class="yb-section yb-section--cream" style="padding-top:3rem;">
   <div class="yb-section__inner">
 
-    {% if images %}
+    {% if items %}
     <div class="yb-cat-grid">
-      {% for image in images %}
+      {% for item in items %}
       <article class="yb-cat-card reveal">
-        <div class="yb-cat-card__img" onclick="openLightbox('{{ image.image.url|escapejs }}','{{ image.title|escapejs }}')">
-          <img src="{{ image.image.url }}" alt="{{ image.title }}" loading="lazy" decoding="async" width="500" height="500">
+        <div class="yb-cat-card__img" onclick="openLightbox('{{ item.image.url|escapejs }}','{{ item.name|escapejs }}')">
+          <img src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy" decoding="async">
           <div class="yb-cat-card__overlay"><i class="fas fa-expand-alt"></i></div>
         </div>
         <div class="yb-cat-card__body">
           <span class="yb-cat-card__num">0{{ forloop.counter }}</span>
-          <h3 class="yb-cat-card__title">{{ image.title }}</h3>
-          <a href="{% url 'order' %}?item={{ image.title|urlencode }}" class="yb-cat-card__cta">
-            Order This Design <i class="fas fa-arrow-right" style="font-size:0.65rem;"></i>
-          </a>
+          <h3 class="yb-cat-card__title">{{ item.name }}</h3>
+          {% if item.description %}
+          <p class="yb-cat-card__desc">{{ item.description }}</p>
+          {% endif %}
+          <div class="yb-cat-card__footer">
+            <span class="yb-cat-card__price">From R{{ item.price }}</span>
+            <a href="{% url 'order' %}?item={{ item.name|urlencode }}" class="yb-cat-card__cta">
+              Order This <i class="fas fa-arrow-right" style="font-size:0.65rem;"></i>
+            </a>
+          </div>
         </div>
       </article>
       {% endfor %}
@@ -106,7 +48,7 @@
     {% else %}
     <div style="text-align:center;padding:5rem 2rem;color:var(--soft);">
       <p style="font-family:'Lora',serif;font-style:italic;font-size:1.1rem;margin-bottom:1.5rem;">
-        No designs in this category yet &mdash; check back soon, or contact us for a custom request.
+        No designs in this category yet &mdash; or send us a custom request.
       </p>
       <a href="{% url 'order' %}" class="yb-btn yb-btn--fill">Place a Custom Order</a>
     </div>
@@ -116,12 +58,12 @@
 </section>
 
 <!-- CTA -->
-{% if images %}
+{% if items %}
 <section class="yb-cta">
   <div class="reveal">
-    <span class="yb-cta__kicker">Don&rsquo;t See What You Want?</span>
-    <h2 class="yb-cta__title">Let&rsquo;s Design Something Custom</h2>
-    <p class="yb-cta__sub">Send us your inspiration and we&rsquo;ll bring it to life.</p>
+    <span class="yb-cta__kicker">Don't See What You Want?</span>
+    <h2 class="yb-cta__title">Let's Design Something Custom</h2>
+    <p class="yb-cta__sub">Send us your inspiration and we'll bring it to life.</p>
     <a href="{% url 'order' %}" class="yb-btn yb-btn--white">Start a Custom Order</a>
   </div>
 </section>
@@ -135,7 +77,7 @@
 </div>
 
 <style>
-/* Light outline button (for dark page hero) */
+/* Light outline button for dark page hero */
 .yb-btn--outline-light {
   background: transparent;
   color: rgba(255,250,245,0.85);
@@ -147,61 +89,10 @@
   color: var(--white);
 }
 
-/* Special offer banner */
-.yb-special-banner {
-  background: linear-gradient(135deg, var(--rose) 0%, var(--ink-mid) 100%);
-  padding: 4rem 3rem;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.yb-special-banner::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 24px);
-}
-.yb-special-banner__inner {
-  position: relative;
-  max-width: 600px;
-  margin: 0 auto;
-}
-.yb-special-banner__badge {
-  display: inline-block;
-  background: var(--white);
-  color: var(--ink-mid);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  padding: 6px 14px;
-  border-radius: 100px;
-  margin-bottom: 1.25rem;
-}
-.yb-special-banner__title {
-  font-family: 'Lora', serif;
-  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
-  font-weight: 700;
-  color: var(--white);
-  margin-bottom: 1rem;
-}
-.yb-special-banner__sub {
-  font-size: 1rem;
-  color: rgba(255,255,255,0.92);
-  line-height: 1.75;
-  margin-bottom: 0.75rem;
-}
-.yb-special-banner__sub strong { color: var(--gold); font-size: 1.15rem; }
-.yb-special-banner__fineprint {
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.65);
-  font-style: italic;
-}
-
 /* Category cards grid */
 .yb-cat-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 }
 .yb-cat-card {
@@ -210,6 +101,8 @@
   border-radius: var(--radius);
   overflow: hidden;
   transition: var(--ease);
+  display: flex;
+  flex-direction: column;
 }
 .yb-cat-card:hover {
   transform: translateY(-4px);
@@ -229,9 +122,7 @@
   object-fit: cover;
   transition: transform 0.6s ease;
 }
-.yb-cat-card:hover .yb-cat-card__img img {
-  transform: scale(1.05);
-}
+.yb-cat-card:hover .yb-cat-card__img img { transform: scale(1.05); }
 .yb-cat-card__overlay {
   position: absolute;
   inset: 0;
@@ -242,19 +133,17 @@
   opacity: 0;
   transition: var(--ease);
 }
-.yb-cat-card:hover .yb-cat-card__overlay {
-  opacity: 1;
-}
-.yb-cat-card__overlay i {
-  color: var(--white);
-  font-size: 1.25rem;
-}
+.yb-cat-card:hover .yb-cat-card__overlay { opacity: 1; }
+.yb-cat-card__overlay i { color: var(--white); font-size: 1.25rem; }
 .yb-cat-card__body {
-  padding: 1.25rem 1.25rem 1.5rem;
+  padding: 1.25rem 1.25rem 1.25rem;
   border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 .yb-cat-card__num {
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   color: var(--soft);
@@ -263,16 +152,41 @@
 }
 .yb-cat-card__title {
   font-family: 'Lora', serif;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: var(--ink);
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+.yb-cat-card__desc {
+  font-size: 0.82rem;
+  color: var(--soft);
+  line-height: 1.65;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.yb-cat-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--rule);
+  margin-top: auto;
+}
+.yb-cat-card__price {
+  font-family: 'Lora', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink-mid);
 }
 .yb-cat-card__cta {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.72rem;
+  gap: 6px;
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -281,17 +195,13 @@
 }
 .yb-cat-card__cta:hover {
   color: var(--ink-mid);
-  gap: 12px;
+  gap: 10px;
 }
 
 @media (max-width: 1100px) {
-  .yb-cat-grid { grid-template-columns: repeat(3, 1fr); }
+  .yb-cat-grid { grid-template-columns: repeat(2, 1fr); }
 }
-@media (max-width: 768px) {
-  .yb-cat-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-  .yb-special-banner { padding: 3rem 1.5rem; }
-}
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .yb-cat-grid { grid-template-columns: 1fr; }
 }
 </style>
