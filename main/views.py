@@ -219,7 +219,7 @@ def contact(request):
             fail_silently=False,
         )
 
-        messages.success(request, 'Thanks for contacting us! We'll get back to you shortly.')
+        messages.success(request, "Thanks for contacting us! We'll get back to you shortly.")
         return redirect('contact')
 
     return render(request, 'main/contact.html')
