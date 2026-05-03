@@ -11,9 +11,13 @@
 
 <div class="yb-gallery-grid">
   {% for image in images %}
-  <div class="yb-gallery-item reveal" onclick="openLightbox('{{ image.image.url|escapejs }}','{{ image.title|escapejs }}')">
-    <img src="{{ image.image.url }}" alt="{{ image.title }}" loading="lazy" decoding="async" width="400" height="400">
-    <div class="yb-gallery-item__overlay"><i class="fas fa-expand-alt"></i></div>
+  <div class="yb-gallery-item reveal">
+    <img src="{{ image.image.url }}" alt="{{ image.title }}" loading="lazy" decoding="async" width="400" height="400" onclick="openLightbox('{{ image.image.url|escapejs }}','{{ image.title|escapejs }}')">
+    <div class="yb-gallery-item__overlay">
+      <a href="{% url 'order' %}?item={{ image.title|urlencode }}&img_url={{ image.image.url|urlencode }}" class="yb-order-btn">
+        <i class="fas fa-shopping-bag"></i> Order This
+      </a>
+    </div>
   </div>
   {% empty %}
   <div style="grid-column:1/-1;text-align:center;padding:5rem 2rem;color:var(--soft);">
@@ -32,6 +36,35 @@
   <p class="yb-lightbox__title" id="lightboxTitle"></p>
 </div>
 
+<style>
+.yb-gallery-item__overlay {
+  opacity: 0;
+  transition: var(--ease);
+  background: rgba(90,58,46,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.yb-gallery-item:hover .yb-gallery-item__overlay { opacity: 1; }
+.yb-order-btn {
+  background: var(--white);
+  color: var(--ink-mid);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 18px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--ease);
+}
+.yb-order-btn:hover {
+  background: var(--rose);
+  color: var(--white);
+}
+</style>
 {% endblock %}
 
 {% block extra_js %}
