@@ -1,11 +1,15 @@
 import os
+import io
 import logging
+import mimetypes
+import urllib.request
 from urllib.parse import quote
 from collections import defaultdict, OrderedDict
 
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
+from django.core.files.base import ContentFile
 from django.http import FileResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods
@@ -91,23 +95,48 @@ def faq(request):
 @require_http_methods(["GET", "POST"])
 def order(request):
     initial_data = {}
-    if 'item' in request.GET:
-        initial_data['item'] = request.GET['item']
+    selected_image_url = None
+
+    if request.method == 'GET':
+        if 'item' in request.GET:
+            initial_data['item'] = request.GET['item']
+        if 'img_url' in request.GET:
+            selected_image_url = request.GET['img_url']
+
+    if request.method == 'POST':
+        selected_image_url = request.POST.get('selected_image_url')
 
     form = OrderForm(request.POST or None, request.FILES or None, initial=initial_data)
 
     if request.method == 'POST':
         if form.is_valid():
-            order = form.save()
-            logger.info(f"[ORDER] New order placed by {order.name}")
+            order_obj = form.save(commit=False)
 
-            item_image = GalleryImage.objects.filter(title__iexact=order.item).first()
-            image_url = request.build_absolute_uri(item_image.image.url) if item_image else None
+            # Auto-attach gallery image if no reference image uploaded
+            if not order_obj.reference_image and selected_image_url:
+                try:
+                    # Build absolute path from media URL
+                    media_url = settings.MEDIA_URL
+                    if selected_image_url.startswith(media_url):
+                        relative_path = selected_image_url[len(media_url):]
+                        full_path = os.path.join(settings.MEDIA_ROOT, relative_path)
+                        if os.path.exists(full_path):
+                            with open(full_path, 'rb') as f:
+                                filename = os.path.basename(full_path)
+                                order_obj.reference_image.save(filename, ContentFile(f.read()), save=False)
+                except Exception as e:
+                    logger.warning(f"[ORDER] Could not attach gallery image: {e}")
 
+            order_obj.save()
+            logger.info(f"[ORDER] New order placed by {order_obj.name}")
+
+            image_url = request.build_absolute_uri(order_obj.reference_image.url) if order_obj.reference_image else None
+
+            # Send HTML admin email
             try:
-                subject = f"New Order from {order.name}"
+                subject = f"New Order from {order_obj.name}"
                 html_body = render_to_string('emails/admin_order_notification.html', {
-                    'order': order,
+                    'order': order_obj,
                     'image_url': image_url
                 })
 
@@ -119,34 +148,38 @@ def order(request):
                 )
                 admin_email.attach_alternative(html_body, "text/html")
 
-                if order.reference_image:
-                    admin_email.attach_file(order.reference_image.path)
+                if order_obj.reference_image:
+                    admin_email.attach_file(order_obj.reference_image.path)
 
                 admin_email.send(fail_silently=False)
             except Exception as e:
                 logger.warning(f"[EMAIL_ERROR] Failed to send admin email: {e}")
                 messages.warning(request, "⚠️ Order saved, but admin email failed.")
 
-            if order.email:
+            # Send customer confirmation
+            if order_obj.email:
                 try:
-                    html_content = render_to_string('emails/order_confirmation.html', {'order': order})
+                    html_content = render_to_string('emails/order_confirmation.html', {'order': order_obj})
                     customer_email = EmailMessage(
                         subject="Your Yummy Bakes Order Confirmation",
                         body=html_content,
                         from_email=settings.DEFAULT_FROM_EMAIL,
-                        to=[order.email],
+                        to=[order_obj.email],
                     )
                     customer_email.content_subtype = "html"
                     customer_email.send(fail_silently=False)
                 except Exception as e:
-                    logger.warning(f"[EMAIL_ERROR] Failed to send customer confirmation email: {e}")
+                    logger.warning(f"[EMAIL_ERROR] Failed to send customer confirmation: {e}")
                     messages.warning(request, "⚠️ Confirmation email to customer failed.")
 
-            return redirect('thank_you', order_id=order.id)
+            return redirect('thank_you', order_id=order_obj.id)
         else:
             messages.error(request, "⚠️ Please correct the errors below.")
 
-    return render(request, 'main/order.html', {'form': form})
+    return render(request, 'main/order.html', {
+        'form': form,
+        'selected_image_url': selected_image_url,
+    })
 
 
 def thank_you(request, order_id):
@@ -194,7 +227,6 @@ def serve_protected_media(request, path):
     if not os.path.exists(full_path):
         logger.info(f"[404] Media not found: {safe_path}")
         raise Http404("File not found.")
-    import mimetypes
     mime_type, _ = mimetypes.guess_type(full_path)
     mime_type = mime_type or 'application/octet-stream'
     response = FileResponse(open(full_path, 'rb'), content_type=mime_type)
