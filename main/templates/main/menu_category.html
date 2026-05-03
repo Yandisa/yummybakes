@@ -8,8 +8,13 @@
 <div class="yb-page-hero">
   <span class="yb-kicker yb-kicker--gold" style="margin-bottom:1rem;">-- The Collection</span>
   <h1>{{ category_label }}</h1>
-  <p>{% if items %}{{ items|length }} {% if items|length == 1 %}design{% else %}designs{% endif %} in this category. Tap any item to view full size.{% else %}No items in this category yet.{% endif %}</p>
-
+  <p>
+    {% if gallery_images %}
+      {{ gallery_images|length }} {% if gallery_images|length == 1 %}design{% else %}designs{% endif %} in this category. Tap any image to view full size.
+    {% else %}
+      No designs in this category yet.
+    {% endif %}
+  </p>
   <div style="margin-top:1.75rem;">
     <a href="{% url 'menu' %}" class="yb-btn yb-btn--outline-light">
       <i class="fas fa-arrow-left" style="font-size:0.7rem;"></i> Back to Menu
@@ -17,55 +22,10 @@
   </div>
 </div>
 
-<!-- ITEMS GRID -->
+<!-- GALLERY GRID -->
 <section class="yb-section yb-section--cream" style="padding-top:3rem;">
   <div class="yb-section__inner">
-
-    {% if items %}
-    <div class="yb-cat-grid">
-      {% for item in items %}
-      <article class="yb-cat-card reveal">
-        <div class="yb-cat-card__img" onclick="openLightbox('{{ item.image.url|escapejs }}','{{ item.name|escapejs }}')">
-          <img src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy" decoding="async">
-          <div class="yb-cat-card__overlay"><i class="fas fa-expand-alt"></i></div>
-        </div>
-        <div class="yb-cat-card__body">
-          <span class="yb-cat-card__num">0{{ forloop.counter }}</span>
-          <h3 class="yb-cat-card__title">{{ item.name }}</h3>
-          {% if item.description %}
-          <p class="yb-cat-card__desc">{{ item.description }}</p>
-          {% endif %}
-          <div class="yb-cat-card__footer">
-            <span class="yb-cat-card__price">From R{{ item.price }}</span>
-            <a href="{% url 'order' %}?item={{ item.name|urlencode }}" class="yb-cat-card__cta">
-              Order This <i class="fas fa-arrow-right" style="font-size:0.65rem;"></i>
-            </a>
-          </div>
-        </div>
-      </article>
-      {% endfor %}
-    </div>
-    {% else %}
-    <div style="text-align:center;padding:5rem 2rem;color:var(--soft);">
-      <p style="font-family:'Lora',serif;font-style:italic;font-size:1.1rem;margin-bottom:1.5rem;">
-        No designs in this category yet &mdash; or send us a custom request.
-      </p>
-      <a href="{% url 'order' %}" class="yb-btn yb-btn--fill">Place a Custom Order</a>
-    </div>
-    {% endif %}
-
-  </div>
-</section>
-
-<!-- GALLERY SECTION -->
-{% if gallery_images %}
-<section class="yb-section yb-section--cream" style="padding-top:0; padding-bottom:3rem;">
-  <div class="yb-section__inner">
-    <div style="margin-bottom:2rem;">
-      <span class="yb-kicker yb-kicker--gold">-- Inspiration</span>
-      <h2 style="font-family:'Lora',serif;font-size:1.6rem;margin-top:0.5rem;">Our {{ category_label }} Gallery</h2>
-      <p style="color:var(--soft);font-size:0.9rem;">Tap any image to view full size.</p>
-    </div>
+    {% if gallery_images %}
     <div class="yb-gallery-grid">
       {% for img in gallery_images %}
       <div class="yb-gallery-item reveal" onclick="openLightbox('{{ img.image.url|escapejs }}','{{ img.title|escapejs }}')">
@@ -74,12 +34,25 @@
       </div>
       {% endfor %}
     </div>
+
+    <div style="text-align:center;padding:3rem 2rem 0;" class="reveal">
+      <p style="color:var(--soft);margin-bottom:1.5rem;font-size:0.95rem;">Like what you see? Place an order.</p>
+      <a href="{% url 'order' %}?item={{ category_label|urlencode }}" class="yb-btn yb-btn--fill">Order a {{ category_label }}</a>
+    </div>
+
+    {% else %}
+    <div style="text-align:center;padding:5rem 2rem;color:var(--soft);">
+      <p style="font-family:'Lora',serif;font-style:italic;font-size:1.1rem;margin-bottom:1.5rem;">
+        No designs in this category yet &mdash; or send us a custom request.
+      </p>
+      <a href="{% url 'order' %}" class="yb-btn yb-btn--fill">Place a Custom Order</a>
+    </div>
+    {% endif %}
   </div>
 </section>
-{% endif %}
 
 <!-- CTA -->
-{% if items %}
+{% if gallery_images %}
 <section class="yb-cta">
   <div class="reveal">
     <span class="yb-cta__kicker">Don't See What You Want?</span>
@@ -98,7 +71,6 @@
 </div>
 
 <style>
-/* Light outline button for dark page hero */
 .yb-btn--outline-light {
   background: transparent;
   color: rgba(255,250,245,0.85);
@@ -108,122 +80,6 @@
   border-color: rgba(255,255,255,0.6);
   background: rgba(255,255,255,0.05);
   color: var(--white);
-}
-
-/* Category cards grid */
-.yb-cat-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-}
-.yb-cat-card {
-  background: var(--white);
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: var(--ease);
-  display: flex;
-  flex-direction: column;
-}
-.yb-cat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(90,58,46,0.1);
-  border-color: var(--rose);
-}
-.yb-cat-card__img {
-  aspect-ratio: 1/1;
-  background: var(--blush);
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-.yb-cat-card__img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s ease;
-}
-.yb-cat-card:hover .yb-cat-card__img img { transform: scale(1.05); }
-.yb-cat-card__overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(90,58,46,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: var(--ease);
-}
-.yb-cat-card:hover .yb-cat-card__overlay { opacity: 1; }
-.yb-cat-card__overlay i { color: var(--white); font-size: 1.25rem; }
-.yb-cat-card__body {
-  padding: 1.25rem 1.25rem 1.25rem;
-  border-top: 1px solid var(--rule);
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-.yb-cat-card__num {
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  color: var(--soft);
-  display: block;
-  margin-bottom: 0.4rem;
-}
-.yb-cat-card__title {
-  font-family: 'Lora', serif;
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--ink);
-  margin-bottom: 0.5rem;
-}
-.yb-cat-card__desc {
-  font-size: 0.82rem;
-  color: var(--soft);
-  line-height: 1.65;
-  margin-bottom: 1rem;
-  flex-grow: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.yb-cat-card__footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--rule);
-  margin-top: auto;
-}
-.yb-cat-card__price {
-  font-family: 'Lora', serif;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--ink-mid);
-}
-.yb-cat-card__cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--rose);
-  transition: var(--ease);
-}
-.yb-cat-card__cta:hover {
-  color: var(--ink-mid);
-  gap: 10px;
-}
-
-@media (max-width: 1100px) {
-  .yb-cat-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 600px) {
-  .yb-cat-grid { grid-template-columns: 1fr; }
 }
 </style>
 
