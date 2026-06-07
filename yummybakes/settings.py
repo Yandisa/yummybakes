@@ -16,6 +16,11 @@ ALLOWED_HOSTS = os.environ.get(
     '127.0.0.1,localhost,yummybakes.co.za,www.yummybakes.co.za'
 ).split(',') + ['*']
 
+CSRF_TRUSTED_ORIGINS = os.environ.get(
+    'CSRF_TRUSTED_ORIGINS',
+    'https://yummybakes.co.za,https://www.yummybakes.co.za'
+).split(',')
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
