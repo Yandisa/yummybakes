@@ -1,5 +1,23 @@
 from django import forms
 from .models import Testimonial, Order
+from .spam_protection import SpamProtectionFormMixin
+
+
+class ContactForm(SpamProtectionFormMixin, forms.Form):
+    name = forms.CharField(
+        max_length=150,
+        widget=forms.TextInput(attrs={'placeholder': 'e.g. Thandi Dlamini', 'class': 'form-control'})
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'placeholder': 'e.g. thandi@gmail.com', 'class': 'form-control'})
+    )
+    message = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'rows': 5,
+            'placeholder': 'Tell us about your order or question...',
+            'class': 'form-control'
+        })
+    )
 
 
 class TestimonialForm(forms.ModelForm):
@@ -32,7 +50,7 @@ class TestimonialForm(forms.ModelForm):
         return message
 
 
-class OrderForm(forms.ModelForm):
+class OrderForm(SpamProtectionFormMixin, forms.ModelForm):
     class Meta:
         model = Order
         fields = ['name', 'email', 'phone', 'item', 'date', 'notes', 'reference_image']

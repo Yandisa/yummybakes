@@ -17,7 +17,8 @@ from django.core.mail import EmailMessage, EmailMultiAlternatives, send_mail
 from django.template.loader import render_to_string
 
 from .models import Testimonial, GalleryImage, MenuItem, Order
-from .forms import TestimonialForm, OrderForm
+from .forms import TestimonialForm, OrderForm, ContactForm
+from .spam_protection import is_rate_limited
 
 logger = logging.getLogger(__name__)
 
@@ -114,6 +115,13 @@ def order(request):
     form = OrderForm(request.POST or None, request.FILES or None, initial=initial_data)
 
     if request.method == 'POST':
+        if is_rate_limited(request, 'order', limit=5, window_seconds=3600):
+            messages.error(request, "You've submitted too many orders recently. Please try again later, or contact us via WhatsApp.")
+            return render(request, 'main/order.html', {
+                'form': form,
+                'selected_image_url': selected_image_url,
+            })
+
         if form.is_valid():
             order_obj = form.save(commit=False)
 
@@ -241,25 +249,34 @@ def serve_protected_media(request, path):
 
 
 def contact(request):
+    form = ContactForm(request.POST or None)
+
     if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        message = request.POST.get('message')
+        if is_rate_limited(request, 'contact', limit=5, window_seconds=3600):
+            messages.error(request, "You've submitted too many messages recently. Please try again later.")
+            return redirect('contact')
 
-        full_message = f"Message from {name} ({email}):\n\n{message}"
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
 
-        send_mail(
-            subject=f"New Contact Form Message from {name}",
-            message=full_message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=['xolagaju8@gmail.com'],
-            fail_silently=False,
-        )
+            full_message = f"Message from {name} ({email}):\n\n{message}"
 
-        messages.success(request, "Thanks for contacting us! We'll get back to you shortly.")
-        return redirect('contact')
+            send_mail(
+                subject=f"New Contact Form Message from {name}",
+                message=full_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=['xolagaju8@gmail.com'],
+                fail_silently=False,
+            )
 
-    return render(request, 'main/contact.html')
+            messages.success(request, "Thanks for contacting us! We'll get back to you shortly.")
+            return redirect('contact')
+        else:
+            messages.error(request, "Please correct the errors below and try again.")
+
+    return render(request, 'main/contact.html', {'form': form})
 
 
 def handler404(request, exception):

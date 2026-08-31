@@ -50,18 +50,36 @@
     <h3 style="font-family:'Lora',serif;font-size:1.75rem;margin-bottom:2rem;">We&rsquo;ll Get Back to You</h3>
     <form method="POST" action="{% url 'contact' %}">
       {% csrf_token %}
+      {{ form.website }}
+      {{ form.form_rendered_at }}
+
+      {% if form.non_field_errors %}
+      <div class="yb-alert yb-alert--error" style="margin-bottom:1.5rem;">
+        Please correct the errors below and try again.
+      </div>
+      {% endif %}
+
       <div class="yb-form-group">
-        <label for="name">Your Name</label>
-        <input type="text" name="name" id="name" required placeholder="e.g. Thandi Dlamini">
+        <label for="id_name">Your Name</label>
+        <input type="text" name="name" id="id_name" required placeholder="e.g. Thandi Dlamini" value="{{ form.name.value|default_if_none:'' }}">
+        {% if form.name.errors %}<ul>{% for e in form.name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
       </div>
       <div class="yb-form-group">
-        <label for="email">Email Address</label>
-        <input type="email" name="email" id="email" required placeholder="e.g. thandi@gmail.com">
+        <label for="id_email">Email Address</label>
+        <input type="email" name="email" id="id_email" required placeholder="e.g. thandi@gmail.com" value="{{ form.email.value|default_if_none:'' }}">
+        {% if form.email.errors %}<ul>{% for e in form.email.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
       </div>
       <div class="yb-form-group">
-        <label for="message">Your Message</label>
-        <textarea name="message" id="message" rows="5" required placeholder="Tell us about your order or question..."></textarea>
+        <label for="id_message">Your Message</label>
+        <textarea name="message" id="id_message" rows="5" required placeholder="Tell us about your order or question...">{{ form.message.value|default_if_none:'' }}</textarea>
+        {% if form.message.errors %}<ul>{% for e in form.message.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
       </div>
+      {% if form.captcha %}
+      <div class="yb-form-group">
+        {{ form.captcha }}
+        {% if form.captcha.errors %}<ul>{% for e in form.captcha.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+      </div>
+      {% endif %}
       <button type="submit" class="yb-btn yb-btn--fill" style="width:100%;justify-content:center;">Send Message</button>
     </form>
   </div>

@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_recaptcha',
     'main',
 ]
 
@@ -120,6 +121,14 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = 'Yummy Bakes <xolagaju8@gmail.com>'
+
+# reCAPTCHA v3 (invisible spam protection on contact/order forms).
+# Get site + secret keys at https://www.google.com/recaptcha/admin
+# and set them as env vars. Forms work fine without them — the
+# captcha field is simply skipped until both are set.
+RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY', '')
+RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY', '')
+RECAPTCHA_REQUIRED_SCORE = 0.5
 
 # Production security (only when DEBUG=False AND on HTTPS)
 if not DEBUG and os.environ.get('SECURE_COOKIES', 'True') == 'True':
